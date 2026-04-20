@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공부엉즈 캐릭터 라인업</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: #FAFAF8;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            padding: 60px 40px;
+        }
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 800;
+            color: #3D3229;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .page-subtitle {
+            text-align: center;
+            font-size: 15px;
+            color: #8B7D6B;
+            margin-bottom: 56px;
+            letter-spacing: 0.5px;
+        }
+        .lineup {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 28px;
+            flex-wrap: wrap;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .card {
+            width: 260px;
+            background: #FFFFFF;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 32px 20px 28px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.03);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 12px 40px rgba(0,0,0,0.05);
+        }
+        .card svg {
+            display: block;
+            width: 200px;
+            height: 260px;
+        }
+        .text-area {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #3D3229;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+        }
+        .description {
+            font-size: 12.5px;
+            color: #8B7D6B;
+            letter-spacing: 0.3px;
+        }
+        .role-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 10.5px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .badge-owl { background: rgba(212,168,75,0.15); color: #8B6F4E; }
+        .badge-ham { background: rgba(212,133,106,0.15); color: #D4856A; }
+        .badge-fox { background: rgba(196,160,96,0.15); color: #C4A060; }
+        .badge-rabbit { background: rgba(107,157,184,0.15); color: #6B9DB8; }
+        .badge-bear { background: rgba(123,168,120,0.15); color: #7BA878; }
+    </style>
+</head>
+<body>
+    <h1 class="page-title">공부엉즈 캐릭터 라인업</h1>
+    <p class="page-subtitle">마음숲에서 함께 자라는 다섯 친구들</p>
+
+    <div class="lineup">
+
+        <!-- ============================================ -->
+        <!-- 1. 공부엉 (부엉이) -->
+        <!-- ============================================ -->
+        <div class="card">
+            <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="owl-body" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#8B6F4E"/>
+                        <stop offset="100%" stop-color="#7A5E3D"/>
+                    </linearGradient>
+                    <radialGradient id="owl-head" cx="50%" cy="40%" r="55%">
+                        <stop offset="0%" stop-color="#9A7E5E"/>
+                        <stop offset="100%" stop-color="#8B6F4E"/>
+                    </radialGradient>
+                    <radialGradient id="owl-face" cx="50%" cy="45%" r="50%">
+                        <stop offset="0%" stop-color="#FBF5EE"/>
+                        <stop offset="100%" stop-color="#F5EDE3"/>
+                    </radialGradient>
+                    <radialGradient id="owl-iris-l" cx="42%" cy="38%" r="50%">
+                        <stop offset="0%" stop-color="#C08840"/>
+                        <stop offset="50%" stop-color="#8B6530"/>
+                        <stop offset="100%" stop-color="#5A3E1E"/>
+                    </radialGradient>
+                    <radialGradient id="owl-iris-r" cx="42%" cy="38%" r="50%">
+                        <stop offset="0%" stop-color="#C08840"/>
+                        <stop offset="50%" stop-color="#8B6530"/>
+                        <stop offset="100%" stop-color="#5A3E1E"/>
+                    </radialGradient>
+                    <radialGradient id="owl-cheek" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#F4B8A5" stop-opacity="0.6"/>
+                        <stop offset="100%" stop-color="#F4B8A5" stop-opacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="owl-wing-l" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#7A6248"/>
+                        <stop offset="100%" stop-color="#6B5340"/>
+                    </linearGradient>
+                    <linearGradient id="owl-wing-r" x1="1" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#7A6248"/>
+                        <stop offset="100%" stop-color="#6B5340"/>
+                    </linearGradient>
+                    <filter id="owl-shadow" x="-10%" y="-10%" width="120%" height="130%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+                    </filter>
+                </defs>
+
+                <!-- 발 -->
+                <ellipse cx="78" cy="248" rx="15" ry="7" fill="#D4A574"/>
+                <ellipse cx="122" cy="248" rx="15" ry="7" fill="#D4A574"/>
+                <ellipse cx="70" cy="250" rx="5" ry="3.5" fill="#C89A68"/>
+                <ellipse cx="78" cy="252" rx="5" ry="3.5" fill="#C89A68"/>
+                <ellipse cx="86" cy="250" rx="5" ry="3.5" fill="#C89A68"/>
+                <ellipse cx="114" cy="250" rx="5" ry="3.5" fill="#C89A68"/>
+                <ellipse cx="122" cy="252" rx="5" ry="3.5" fill="#C89A68"/>
+                <ellipse cx="130" cy="250" rx="5" ry="3.5" fill="#C89A68"/>
+
+                <!-- 몸통 -->
+                <ellipse cx="100" cy="200" rx="58" ry="54" fill="url(#owl-body)" filter="url(#owl-shadow)"/>
+
+                <!-- 배 (크림) -->
+                <ellipse cx="100" cy="208" rx="38" ry="40" fill="url(#owl-face)"/>
+
+                <!-- 배 V자 무늬 -->
+                <path d="M85 192 L100 200 L115 192" fill="none" stroke="rgba(139,111,78,0.12)" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M82 202 L100 212 L118 202" fill="none" stroke="rgba(139,111,78,0.10)" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M80 212 L100 222 L120 212" fill="none" stroke="rgba(139,111,78,0.08)" stroke-width="1.8" stroke-linecap="round"/>
+
+                <!-- 날개 왼쪽 -->
+                <path d="M42 170 Q30 190 36 220 Q42 228 50 218 Q56 200 50 178 Z" fill="url(#owl-wing-l)"/>
+                <path d="M40 195 Q44 200 50 200" fill="none" stroke="rgba(245,237,227,0.2)" stroke-width="1.5"/>
+                <path d="M38 205 Q44 210 52 210" fill="none" stroke="rgba(245,237,227,0.15)" stroke-width="1.5"/>
+
+                <!-- 날개 오른쪽 -->
+                <path d="M158 170 Q170 190 164 220 Q158 228 150 218 Q144 200 150 178 Z" fill="url(#owl-wing-r)"/>
+                <path d="M160 195 Q156 200 150 200" fill="none" stroke="rgba(245,237,227,0.2)" stroke-width="1.5"/>
+                <path d="M162 205 Q156 210 148 210" fill="none" stroke="rgba(245,237,227,0.15)" stroke-width="1.5"/>
+
+                <!-- 머리 -->
+                <ellipse cx="100" cy="100" rx="68" ry="64" fill="url(#owl-head)" filter="url(#owl-shadow)"/>
+
+                <!-- 얼굴 디스크 (흰색 영역) -->
+                <ellipse cx="100" cy="108" rx="54" ry="50" fill="url(#owl-face)"/>
+
+                <!-- 뿔깃 - 왼쪽 (작게) -->
+                <path d="M52 52 Q48 30 58 20 Q62 28 64 48" fill="#6B5340"/>
+                <path d="M46 56 Q40 38 48 28 Q52 34 54 52" fill="#7A6248" opacity="0.7"/>
+
+                <!-- 뿔깃 - 오른쪽 (크게, 비대칭) -->
+                <path d="M140 48 Q148 22 142 8 Q136 18 134 44" fill="#6B5340"/>
+                <path d="M146 54 Q154 30 150 16 Q144 26 142 50" fill="#7A6248" opacity="0.7"/>
+                <path d="M134 52 Q138 34 136 24 Q132 32 130 50" fill="#7A6248" opacity="0.5"/>
+
+                <!-- 눈 - 왼쪽 -->
+                <circle cx="76" cy="100" r="22" fill="white" stroke="rgba(139,111,78,0.1)" stroke-width="0.5"/>
+                <circle cx="76" cy="102" r="17" fill="url(#owl-iris-l)"/>
+                <circle cx="76" cy="104" r="11" fill="#1A1210"/>
+                <circle cx="71" cy="96" r="7" fill="white" opacity="0.95"/>
+                <circle cx="82" cy="108" r="3.5" fill="white" opacity="0.6"/>
+
+                <!-- 눈 - 오른쪽 -->
+                <circle cx="124" cy="100" r="22" fill="white" stroke="rgba(139,111,78,0.1)" stroke-width="0.5"/>
+                <circle cx="124" cy="102" r="17" fill="url(#owl-iris-r)"/>
+                <circle cx="124" cy="104" r="11" fill="#1A1210"/>
+                <circle cx="119" cy="96" r="7" fill="white" opacity="0.95"/>
+                <circle cx="130" cy="108" r="3.5" fill="white" opacity="0.6"/>
+
+                <!-- 볼터치 -->
+                <ellipse cx="58" cy="120" rx="12" ry="8" fill="url(#owl-cheek)"/>
+                <ellipse cx="142" cy="120" rx="12" ry="8" fill="url(#owl-cheek)"/>
+
+                <!-- 부리 -->
+                <path d="M95 120 Q100 132 105 120 Q100 124 95 120 Z" fill="#D4A574"/>
+                <path d="M97 120 Q100 128 103 120" fill="none" stroke="#C09060" stroke-width="0.5"/>
+
+                <!-- 미소 -->
+                <path d="M93 134 Q100 139 107 134" fill="none" stroke="rgba(107,83,64,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <div class="text-area">
+                <div class="name">공부엉</div>
+                <div class="description">마음숲의 안내자</div>
+                <span class="role-badge badge-owl">메인 캐릭터</span>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- 2. 햄햄이 (햄스터) -->
+        <!-- ============================================ -->
+        <div class="card">
+            <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="ham-body" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#E8B89D"/>
+                        <stop offset="100%" stop-color="#D4A088"/>
+                    </linearGradient>
+                    <radialGradient id="ham-head" cx="50%" cy="40%" r="55%">
+                        <stop offset="0%" stop-color="#EDAC8E"/>
+                        <stop offset="100%" stop-color="#E8A88C"/>
+                    </radialGradient>
+                    <radialGradient id="ham-face" cx="50%" cy="45%" r="50%">
+                        <stop offset="0%" stop-color="#FFFCF8"/>
+                        <stop offset="100%" stop-color="#FFF5EE"/>
+                    </radialGradient>
+                    <radialGradient id="ham-cheek-puff" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#F5CAB8"/>
+                        <stop offset="100%" stop-color="#F0C0B0"/>
+                    </radialGradient>
+                    <radialGradient id="ham-blush" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#F4A090" stop-opacity="0.7"/>
+                        <stop offset="100%" stop-color="#F4A090" stop-opacity="0"/>
+                    </radialGradient>
+                    <radialGradient id="ham-ear-inner" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#F7C8B6"/>
+                        <stop offset="100%" stop-color="#F2BEA8"/>
+                    </radialGradient>
+                    <filter id="ham-shadow" x="-10%" y="-10%" width="120%" height="130%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.07"/>
+                    </filter>
+                </defs>
+
+                <!-- 발 -->
+                <ellipse cx="78" cy="248" rx="16" ry="8" fill="#E8A88C"/>
+                <ellipse cx="122" cy="248" rx="16" ry="8" fill="#E8A88C"/>
+
+                <!-- 몸통 -->
+                <ellipse cx="100" cy="204" rx="56" ry="50" fill="url(#ham-body)" filter="url(#ham-shadow)"/>
+
+                <!-- 배 -->
+                <ellipse cx="100" cy="212" rx="38" ry="38" fill="url(#ham-face)"/>
+
+                <!-- 팔 -->
+                <path d="M44 180 Q36 200 42 218 Q48 222 52 212 Q54 196 48 180 Z" fill="#E8A88C"/>
+                <path d="M156 180 Q164 200 158 218 Q152 222 148 212 Q146 196 152 180 Z" fill="#E8A88C"/>
+
+                <!-- 손 (앞에 모은) -->
+                <ellipse cx="86" cy="195" rx="10" ry="9" fill="#F0B8A0"/>
+                <ellipse cx="114" cy="195" rx="10" ry="9" fill="#F0B8A0"/>
+
+                <!-- 귀 - 왼 -->
+                <circle cx="56" cy="58" r="18" fill="#E8A88C"/>
+                <circle cx="56" cy="58" r="12" fill="url(#ham-ear-inner)"/>
+                <!-- 귀 - 오른 -->
+                <circle cx="144" cy="58" r="18" fill="#E8A88C"/>
+                <circle cx="144" cy="58" r="12" fill="url(#ham-ear-inner)"/>
+
+                <!-- 머리 -->
+                <ellipse cx="100" cy="95" rx="72" ry="65" fill="url(#ham-head)" filter="url(#ham-shadow)"/>
+
+                <!-- 얼굴 (흰 영역) -->
+                <ellipse cx="100" cy="102" rx="56" ry="52" fill="url(#ham-face)"/>
+
+                <!-- 볼주머니 - 빵빵하게 튀어나온 -->
+                <ellipse cx="40" cy="108" rx="24" ry="22" fill="url(#ham-cheek-puff)"/>
+                <ellipse cx="160" cy="108" rx="24" ry="22" fill="url(#ham-cheek-puff)"/>
+
+                <!-- 볼터치 (분홍) -->
+                <ellipse cx="48" cy="112" rx="12" ry="8" fill="url(#ham-blush)"/>
+                <ellipse cx="152" cy="112" rx="12" ry="8" fill="url(#ham-blush)"/>
+
+                <!-- 눈 - 왼 -->
+                <circle cx="78" cy="96" r="15" fill="#2C2420"/>
+                <circle cx="74" cy="91" r="6" fill="white" opacity="0.95"/>
+                <circle cx="84" cy="101" r="3" fill="white" opacity="0.55"/>
+
+                <!-- 눈 - 오른 -->
+                <circle cx="122" cy="96" r="15" fill="#2C2420"/>
+                <circle cx="118" cy="91" r="6" fill="white" opacity="0.95"/>
+                <circle cx="128" cy="101" r="3" fill="white" opacity="0.55"/>
+
+                <!-- 코 -->
+                <ellipse cx="100" cy="116" rx="5" ry="4" fill="#E07A5A"/>
+
+                <!-- 입 (W자 미소) -->
+                <path d="M90 122 Q95 128 100 122 Q105 128 110 122" fill="none" stroke="rgba(107,83,64,0.45)" stroke-width="1.5" stroke-linecap="round"/>
+
+                <!-- 수염 왼 -->
+                <line x1="22" y1="100" x2="58" y2="104" stroke="rgba(107,83,64,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="20" y1="108" x2="56" y2="110" stroke="rgba(107,83,64,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="22" y1="116" x2="58" y2="116" stroke="rgba(107,83,64,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+
+                <!-- 수염 오른 -->
+                <line x1="178" y1="100" x2="142" y2="104" stroke="rgba(107,83,64,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="180" y1="108" x2="144" y2="110" stroke="rgba(107,83,64,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="178" y1="116" x2="142" y2="116" stroke="rgba(107,83,64,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <div class="text-area">
+                <div class="name">햄햄이</div>
+                <div class="description">솔직한 감정 친구</div>
+                <span class="role-badge badge-ham">감정 담당</span>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- 3. 부비 (여우) -->
+        <!-- ============================================ -->
+        <div class="card">
+            <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="fox-body" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#D4884A"/>
+                        <stop offset="100%" stop-color="#C07A3E"/>
+                    </linearGradient>
+                    <radialGradient id="fox-head" cx="50%" cy="40%" r="55%">
+                        <stop offset="0%" stop-color="#DDA458"/>
+                        <stop offset="100%" stop-color="#D4884A"/>
+                    </radialGradient>
+                    <radialGradient id="fox-face" cx="50%" cy="45%" r="50%">
+                        <stop offset="0%" stop-color="#FFF8EE"/>
+                        <stop offset="100%" stop-color="#FFF2E0"/>
+                    </radialGradient>
+                    <linearGradient id="fox-tail" x1="0" y1="0" x2="0.7" y2="1">
+                        <stop offset="0%" stop-color="#DDA458"/>
+                        <stop offset="70%" stop-color="#D4884A"/>
+                        <stop offset="100%" stop-color="#FFF8EE"/>
+                    </linearGradient>
+                    <radialGradient id="fox-blush" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#F4B8A5" stop-opacity="0.55"/>
+                        <stop offset="100%" stop-color="#F4B8A5" stop-opacity="0"/>
+                    </radialGradient>
+                    <filter id="fox-shadow" x="-10%" y="-10%" width="120%" height="130%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.07"/>
+                    </filter>
+                </defs>
+
+                <!-- 꼬리 (큰, 오른쪽 아래) -->
+                <path d="M148 178 Q180 170 190 200 Q194 230 170 240 Q155 244 150 230 Q144 210 148 178 Z" fill="url(#fox-tail)"/>
+                <!-- 꼬리 흰 팁 -->
+                <path d="M170 226 Q172 240 165 244 Q155 246 152 234 Q156 224 170 226 Z" fill="#FFF8EE"/>
+
+                <!-- 발 -->
+                <ellipse cx="78" cy="248" rx="14" ry="8" fill="#C48A3E"/>
+                <ellipse cx="122" cy="248" rx="14" ry="8" fill="#C48A3E"/>
+
+                <!-- 몸통 (약간 길쭉) -->
+                <ellipse cx="100" cy="204" rx="52" ry="50" fill="url(#fox-body)" filter="url(#fox-shadow)"/>
+
+                <!-- 배 -->
+                <ellipse cx="100" cy="212" rx="34" ry="36" fill="url(#fox-face)"/>
+
+                <!-- 팔 -->
+                <path d="M48 180 Q38 198 44 216 Q50 220 54 210 Q56 194 50 180 Z" fill="#D4884A"/>
+                <path d="M152 180 Q162 198 156 216 Q150 220 146 210 Q144 194 150 180 Z" fill="#D4884A"/>
+
+                <!-- 귀 - 왼 (크고 뾰족) -->
+                <path d="M56 68 L38 14 L74 54 Z" fill="#D4884A"/>
+                <path d="M58 64 L44 24 L70 56 Z" fill="#F5D0A8"/>
+
+                <!-- 귀 - 오른 (크고 뾰족) -->
+                <path d="M144 68 L162 14 L126 54 Z" fill="#D4884A"/>
+                <path d="M142 64 L156 24 L130 56 Z" fill="#F5D0A8"/>
+
+                <!-- 머리 -->
+                <ellipse cx="100" cy="96" rx="64" ry="58" fill="url(#fox-head)" filter="url(#fox-shadow)"/>
+
+                <!-- 얼굴 크림색 -->
+                <ellipse cx="100" cy="106" rx="50" ry="44" fill="url(#fox-face)"/>
+
+                <!-- 여우 특유의 밝은 볼 패치 -->
+                <ellipse cx="60" cy="100" rx="16" ry="14" fill="rgba(255,248,238,0.6)"/>
+                <ellipse cx="140" cy="100" rx="16" ry="14" fill="rgba(255,248,238,0.6)"/>
+
+                <!-- 눈 - 왼 (약간 가로로 긴 타원) -->
+                <ellipse cx="78" cy="94" rx="14" ry="12" fill="#2C2420"/>
+                <ellipse cx="74" cy="90" rx="5.5" ry="5" fill="white" opacity="0.95"/>
+                <circle cx="84" cy="99" r="2.8" fill="white" opacity="0.5"/>
+
+                <!-- 눈 - 오른 (약간 가로로 긴 타원) -->
+                <ellipse cx="122" cy="94" rx="14" ry="12" fill="#2C2420"/>
+                <ellipse cx="118" cy="90" rx="5.5" ry="5" fill="white" opacity="0.95"/>
+                <circle cx="128" cy="99" r="2.8" fill="white" opacity="0.5"/>
+
+                <!-- 눈선 (약간 날카로운) -->
+                <path d="M64 86 Q78 82 92 86" fill="none" stroke="rgba(107,83,64,0.25)" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M108 86 Q122 82 136 86" fill="none" stroke="rgba(107,83,64,0.25)" stroke-width="1.5" stroke-linecap="round"/>
+
+                <!-- 올라간 눈썹 (오른쪽) -->
+                <path d="M118 78 Q126 72 134 76" fill="none" stroke="rgba(107,83,64,0.35)" stroke-width="2" stroke-linecap="round"/>
+
+                <!-- 볼터치 -->
+                <ellipse cx="60" cy="110" rx="10" ry="7" fill="url(#fox-blush)"/>
+                <ellipse cx="140" cy="110" rx="10" ry="7" fill="url(#fox-blush)"/>
+
+                <!-- 삼각형 코 (검은) -->
+                <path d="M95 112 L100 118 L105 112 Z" fill="#2C2420"/>
+                <ellipse cx="99" cy="113" rx="2" ry="1.2" fill="rgba(255,255,255,0.2)"/>
+
+                <!-- 씩 웃는 입 -->
+                <path d="M92 124 Q100 130 108 124" fill="none" stroke="rgba(107,83,64,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M108 124 Q110 122 112 124" fill="none" stroke="rgba(107,83,64,0.35)" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <div class="text-area">
+                <div class="name">부비</div>
+                <div class="description">호기심 탐험가</div>
+                <span class="role-badge badge-fox">사고력 담당</span>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- 4. 또리 (토끼) -->
+        <!-- ============================================ -->
+        <div class="card">
+            <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="rab-body" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#A8B4C4"/>
+                        <stop offset="100%" stop-color="#95A3B5"/>
+                    </linearGradient>
+                    <radialGradient id="rab-head" cx="50%" cy="40%" r="55%">
+                        <stop offset="0%" stop-color="#B4C0CE"/>
+                        <stop offset="100%" stop-color="#A8B5C4"/>
+                    </radialGradient>
+                    <radialGradient id="rab-face" cx="50%" cy="45%" r="50%">
+                        <stop offset="0%" stop-color="#FFFFFF"/>
+                        <stop offset="100%" stop-color="#F0F0F8"/>
+                    </radialGradient>
+                    <linearGradient id="rab-ear" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#B4C0CE"/>
+                        <stop offset="100%" stop-color="#A8B5C4"/>
+                    </linearGradient>
+                    <linearGradient id="rab-ear-inner" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#D8BEE4"/>
+                        <stop offset="100%" stop-color="#C8B0D6"/>
+                    </linearGradient>
+                    <radialGradient id="rab-blush" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#D4A0B0" stop-opacity="0.5"/>
+                        <stop offset="100%" stop-color="#D4A0B0" stop-opacity="0"/>
+                    </radialGradient>
+                    <filter id="rab-shadow" x="-10%" y="-10%" width="120%" height="130%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/>
+                    </filter>
+                </defs>
+
+                <!-- 꼬리 (작고 둥근 솜방울) -->
+                <circle cx="100" cy="222" r="10" fill="white"/>
+                <circle cx="98" cy="220" r="4" fill="rgba(240,240,248,0.6)"/>
+
+                <!-- 발 -->
+                <ellipse cx="76" cy="248" rx="16" ry="9" fill="#A8B5C4"/>
+                <ellipse cx="124" cy="248" rx="16" ry="9" fill="#A8B5C4"/>
+
+                <!-- 몸통 -->
+                <ellipse cx="100" cy="206" rx="52" ry="48" fill="url(#rab-body)" filter="url(#rab-shadow)"/>
+
+                <!-- 배 -->
+                <ellipse cx="100" cy="214" rx="34" ry="36" fill="url(#rab-face)"/>
+
+                <!-- 팔 -->
+                <path d="M48 184 Q38 200 44 216 Q50 220 54 210 Q56 196 50 184 Z" fill="#A8B5C4"/>
+                <path d="M152 184 Q162 200 156 216 Q150 220 146 210 Q144 196 150 184 Z" fill="#A8B5C4"/>
+
+                <!-- 앞발 (모은) -->
+                <ellipse cx="86" cy="200" rx="9" ry="8" fill="#B4C0CE"/>
+                <ellipse cx="114" cy="200" rx="9" ry="8" fill="#B4C0CE"/>
+
+                <!-- 귀 - 왼 (쫑긋, 길게) -->
+                <path d="M72 80 Q66 30 68 -2 Q74 -6 80 0 Q86 28 82 76 Z" fill="url(#rab-ear)"/>
+                <path d="M74 72 Q70 34 72 8 Q76 4 78 10 Q82 36 80 70 Z" fill="url(#rab-ear-inner)"/>
+
+                <!-- 귀 - 오른 (끝이 접힘) -->
+                <path d="M118 80 Q124 30 122 4 Q128 -2 134 6 Q130 32 128 76 Z" fill="url(#rab-ear)"/>
+                <path d="M120 72 Q124 36 123 14 Q128 8 130 16 Q128 38 126 68 Z" fill="url(#rab-ear-inner)"/>
+                <!-- 접힌 부분 -->
+                <path d="M120 2 Q116 -6 126 -8 Q136 -4 134 6 Q128 0 120 2 Z" fill="#9FADB8"/>
+                <path d="M122 0 Q120 -4 128 -5 Q133 -2 132 4 Q128 1 122 0 Z" fill="#BBA8CA"/>
+
+                <!-- 머리 -->
+                <ellipse cx="100" cy="104" rx="62" ry="56" fill="url(#rab-head)" filter="url(#rab-shadow)"/>
+
+                <!-- 얼굴 -->
+                <ellipse cx="100" cy="112" rx="50" ry="44" fill="url(#rab-face)"/>
+
+                <!-- 눈 - 왼 (부드럽고 내려간 눈꼬리) -->
+                <circle cx="78" cy="104" r="13" fill="#2C2420"/>
+                <circle cx="74" cy="100" r="5.5" fill="white" opacity="0.95"/>
+                <circle cx="84" cy="108" r="2.8" fill="white" opacity="0.5"/>
+                <!-- 내려간 눈꼬리 선 -->
+                <path d="M64 100 Q66 98 70 100" fill="none" stroke="rgba(107,83,107,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+
+                <!-- 눈 - 오른 (부드럽고 내려간 눈꼬리) -->
+                <circle cx="122" cy="104" r="13" fill="#2C2420"/>
+                <circle cx="118" cy="100" r="5.5" fill="white" opacity="0.95"/>
+                <circle cx="128" cy="108" r="2.8" fill="white" opacity="0.5"/>
+                <path d="M136 100 Q134 98 130 100" fill="none" stroke="rgba(107,83,107,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+
+                <!-- 볼터치 -->
+                <ellipse cx="60" cy="118" rx="10" ry="7" fill="url(#rab-blush)"/>
+                <ellipse cx="140" cy="118" rx="10" ry="7" fill="url(#rab-blush)"/>
+
+                <!-- 하트 모양 코 (path) -->
+                <path d="M97 120 Q97 117 100 115 Q103 117 103 120 L100 124 Z" fill="#D4A0B0"/>
+
+                <!-- 다정한 미소 -->
+                <path d="M94 128 Q100 133 106 128" fill="none" stroke="rgba(139,125,139,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <div class="text-area">
+                <div class="name">또리</div>
+                <div class="description">다정한 경청 친구</div>
+                <span class="role-badge badge-rabbit">사회성 담당</span>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- 5. 포포 (곰) -->
+        <!-- ============================================ -->
+        <div class="card">
+            <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="bear-body" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#8B9B72"/>
+                        <stop offset="100%" stop-color="#7A8A65"/>
+                    </linearGradient>
+                    <radialGradient id="bear-head" cx="50%" cy="40%" r="55%">
+                        <stop offset="0%" stop-color="#96B488"/>
+                        <stop offset="100%" stop-color="#8B9B72"/>
+                    </radialGradient>
+                    <radialGradient id="bear-face" cx="50%" cy="45%" r="50%">
+                        <stop offset="0%" stop-color="#F5F2EA"/>
+                        <stop offset="100%" stop-color="#EDE8DE"/>
+                    </radialGradient>
+                    <radialGradient id="bear-ear-inner" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#B4D0A8"/>
+                        <stop offset="100%" stop-color="#A8C498"/>
+                    </radialGradient>
+                    <radialGradient id="bear-blush" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#C4A88C" stop-opacity="0.5"/>
+                        <stop offset="100%" stop-color="#C4A88C" stop-opacity="0"/>
+                    </radialGradient>
+                    <radialGradient id="bear-nose" cx="40%" cy="35%" r="55%">
+                        <stop offset="0%" stop-color="#7A6248"/>
+                        <stop offset="100%" stop-color="#5A4A38"/>
+                    </radialGradient>
+                    <filter id="bear-shadow" x="-10%" y="-10%" width="120%" height="130%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/>
+                    </filter>
+                </defs>
+
+                <!-- 발 -->
+                <ellipse cx="74" cy="250" rx="18" ry="9" fill="#7A9A6E"/>
+                <ellipse cx="126" cy="250" rx="18" ry="9" fill="#7A9A6E"/>
+
+                <!-- 몸통 (가장 통통) -->
+                <ellipse cx="100" cy="202" rx="62" ry="56" fill="url(#bear-body)" filter="url(#bear-shadow)"/>
+
+                <!-- 배 -->
+                <ellipse cx="100" cy="210" rx="40" ry="42" fill="url(#bear-face)"/>
+
+                <!-- 팔 -->
+                <path d="M38 176 Q26 198 34 222 Q42 228 48 216 Q52 196 44 176 Z" fill="#8B9B72"/>
+                <path d="M162 176 Q174 198 166 222 Q158 228 152 216 Q148 196 156 176 Z" fill="#8B9B72"/>
+                <!-- 발바닥 패드 -->
+                <ellipse cx="40" cy="218" rx="9" ry="7" fill="#A8C498"/>
+                <ellipse cx="160" cy="218" rx="9" ry="7" fill="#A8C498"/>
+
+                <!-- 귀 - 왼 -->
+                <circle cx="54" cy="56" r="22" fill="#8B9B72"/>
+                <circle cx="54" cy="56" r="14" fill="url(#bear-ear-inner)"/>
+                <!-- 귀 - 오른 -->
+                <circle cx="146" cy="56" r="22" fill="#8B9B72"/>
+                <circle cx="146" cy="56" r="14" fill="url(#bear-ear-inner)"/>
+
+                <!-- 머리 -->
+                <ellipse cx="100" cy="96" rx="70" ry="64" fill="url(#bear-head)" filter="url(#bear-shadow)"/>
+
+                <!-- 얼굴 -->
+                <ellipse cx="100" cy="106" rx="52" ry="48" fill="url(#bear-face)"/>
+
+                <!-- 눈 - 반쯤 감긴 졸린 눈 -->
+                <!-- 왼눈 흰자 -->
+                <circle cx="78" cy="98" r="14" fill="white"/>
+                <!-- 왼눈 동공 (반달형, 아래만) -->
+                <path d="M64 100 Q72 108 78 108 Q84 108 92 100 Q88 112 78 112 Q68 112 64 100 Z" fill="#2C2420"/>
+                <!-- 왼눈 눈꺼풀 (크게 반쯤 덮음) -->
+                <path d="M62 90 Q70 82 78 82 Q86 82 94 90 Q90 98 78 98 Q66 98 62 90 Z" fill="#8B9B72"/>
+                <!-- 왼눈 하이라이트 -->
+                <circle cx="74" cy="104" r="3.5" fill="white" opacity="0.7"/>
+                <!-- 속눈썹 -->
+                <path d="M62 90 Q58 86 56 84" fill="none" stroke="rgba(90,122,82,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+
+                <!-- 오른눈 흰자 -->
+                <circle cx="122" cy="98" r="14" fill="white"/>
+                <!-- 오른눈 동공 -->
+                <path d="M108 100 Q116 108 122 108 Q128 108 136 100 Q132 112 122 112 Q112 112 108 100 Z" fill="#2C2420"/>
+                <!-- 오른눈 눈꺼풀 -->
+                <path d="M106 90 Q114 82 122 82 Q130 82 138 90 Q134 98 122 98 Q110 98 106 90 Z" fill="#8B9B72"/>
+                <!-- 오른눈 하이라이트 -->
+                <circle cx="118" cy="104" r="3.5" fill="white" opacity="0.7"/>
+                <!-- 속눈썹 -->
+                <path d="M138 90 Q142 86 144 84" fill="none" stroke="rgba(90,122,82,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+
+                <!-- 볼터치 -->
+                <ellipse cx="58" cy="116" rx="12" ry="8" fill="url(#bear-blush)"/>
+                <ellipse cx="142" cy="116" rx="12" ry="8" fill="url(#bear-blush)"/>
+
+                <!-- 코 (둥근 갈색 타원) -->
+                <ellipse cx="100" cy="116" rx="9" ry="7" fill="url(#bear-nose)"/>
+                <ellipse cx="97" cy="114" rx="3" ry="2" fill="rgba(255,255,255,0.25)"/>
+
+                <!-- 느긋한 미소 (약간 열린 입) -->
+                <path d="M90 126 Q100 134 110 126" fill="none" stroke="rgba(90,122,82,0.35)" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M94 128 Q100 132 106 128" fill="rgba(90,60,50,0.08)"/>
+            </svg>
+            <div class="text-area">
+                <div class="name">포포</div>
+                <div class="description">느긋한 휴식 친구</div>
+                <span class="role-badge badge-bear">안정/수면 담당</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

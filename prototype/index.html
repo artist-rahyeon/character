@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>공부엉즈</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Pretendard', -apple-system, 'Apple SD Gothic Neo', sans-serif;
+  background: #E8E8E4;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  width: 390px;
+  min-height: 100vh;
+  background: #FAFAF8;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Screens */
+.screen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.screen.active {
+  display: flex;
+  opacity: 1;
+}
+.screen.fade-in {
+  display: flex;
+}
+
+/* ====== ONBOARDING ====== */
+#onboarding {
+  background: #FAFAF8;
+  align-items: center;
+  padding: 0 40px;
+  overflow: hidden;
+}
+.onboard-step {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: calc(100% - 80px);
+  position: absolute;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%) translateY(-10px);
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.onboard-step.active {
+  display: flex;
+  opacity: 1;
+  transform: translateY(-50%) translateY(0);
+}
+.onboard-label {
+  font-size: 13px;
+  color: #999;
+  letter-spacing: 0.5px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.onboard-question {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1A1A1A;
+  line-height: 1.4;
+  margin-bottom: 28px;
+}
+.onboard-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1.5px solid #1A1A1A;
+  background: transparent;
+  font-size: 20px;
+  font-family: inherit;
+  padding: 12px 0;
+  outline: none;
+  color: #1A1A1A;
+}
+.onboard-input::placeholder { color: #CCCCCC; }
+.onboard-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.onboard-choice {
+  padding: 12px 18px;
+  border: 1px solid #E5E5E3;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #1A1A1A;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  text-align: left;
+  font-family: inherit;
+}
+.onboard-choice:hover { border-color: #999; }
+.onboard-choice.selected {
+  background: #1A1A1A;
+  color: #FAFAF8;
+  border-color: #1A1A1A;
+}
+.onboard-next {
+  margin-top: 28px;
+  align-self: flex-end;
+  background: none;
+  border: none;
+  font-size: 15px;
+  color: #1A1A1A;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 12px 0;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.onboard-next.enabled {
+  opacity: 1;
+  pointer-events: all;
+}
+.onboard-result {
+  text-align: center;
+  align-items: center !important;
+}
+.onboard-result .onboard-question {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+.onboard-result .result-sub {
+  font-size: 14px;
+  color: #999;
+  margin-top: 0;
+  margin-bottom: 48px;
+}
+.onboard-start {
+  background: #C4856C;
+  color: #FAFAF8;
+  border: none;
+  padding: 16px 48px;
+  font-size: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 24px;
+}
+
+/* ====== HOME ====== */
+#home {
+  background: #FAFAF8;
+  padding: 0;
+}
+.home-content {
+  flex: 1;
+  padding: 60px 28px 100px;
+  overflow-y: auto;
+}
+.home-header {
+  margin-bottom: 56px;
+}
+.home-greeting {
+  font-size: 11px;
+  color: #BBB;
+  margin-bottom: 8px;
+}
+.home-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+.home-forest-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  background: #F5F8F3;
+  padding: 14px 16px;
+  border-radius: 8px;
+}
+.forest-indicator {
+  width: 12px;
+  height: 12px;
+  background: #8BA888;
+  border-radius: 50%;
+}
+.forest-text {
+  font-size: 11px;
+  color: #BBB;
+}
+.mission-card {
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-radius: 12px;
+  padding: 28px 24px;
+  margin-bottom: 32px;
+}
+.mission-label {
+  font-size: 10px;
+  color: #BBB;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.mission-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.mission-desc {
+  font-size: 12px;
+  color: #AAA;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+.mission-character {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.char-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #FFF;
+  overflow: hidden;
+}
+.char-badge.ham { background: #D4856A; }
+.char-badge.bi { background: #C4A060; }
+.char-badge.ri { background: #6B9DB8; }
+.char-badge.po { background: #7BA878; }
+.char-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.char-badge { position: relative; }
+.char-badge img[src=""] { display: none; }
+.mission-char-name {
+  font-size: 11px;
+  color: #BBB;
+}
+.mission-start {
+  display: block;
+  width: 100%;
+  margin-top: 28px;
+  padding: 14px;
+  background: #1A1A1A;
+  color: #FAFAF8;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ====== TAB BAR ====== */
+.tab-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 72px;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-top: 1px solid #F0F0EE;
+}
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  padding: 8px 12px;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+}
+.tab-item.active { opacity: 1; }
+.tab-item.active .tab-icon { color: #C4856C; }
+.tab-item.active .tab-label { color: #C4856C; }
+.tab-icon {
+  width: 32px;
+  height: 32px;
+  position: relative;
+}
+.tab-label {
+  font-size: 8px;
+  color: #1A1A1A;
+  letter-spacing: -0.2px;
+}
+
+/* Tab icons — simple text symbols */
+.tab-icon {
+  font-size: 20px;
+  line-height: 32px;
+  text-align: center;
+  color: #1A1A1A;
+}
+.icon-home .tab-icon::before { content: '⌂'; }
+.icon-content .tab-icon::before { content: '▤'; }
+.icon-play .tab-icon::before { content: '◎'; }
+.icon-forest .tab-icon::before { content: '♣'; }
+.icon-parent .tab-icon::before { content: '⊙'; }
+
+/* ====== PLAY SECTION (Home) ====== */
+.play-section {
+  margin-top: 8px;
+}
+.play-section-label {
+  font-size: 10px;
+  color: #BBB;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.play-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.play-card {
+  background: #FFF;
+  border-radius: 12px;
+  padding: 20px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.play-card:active { transform: scale(0.96); }
+.play-card-label {
+  font-size: 10px;
+  color: #AAA;
+}
+.play-icon {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  border-radius: 50%;
+  background: #F8F6F3;
+}
+/* Coloring - palette (4 dots) */
+.play-icon-coloring {
+  background: #FDF8F5;
+}
+.palette-dot {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+/* Writing - pencil */
+.play-icon-writing {
+  background: #F5F8FD;
+}
+.pencil-body {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-45deg);
+  width: 6px;
+  height: 26px;
+  background: #C4A060;
+  border-radius: 2px 2px 0 0;
+}
+.pencil-tip {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-45deg);
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 6px solid #555;
+}
+/* Find differences - magnifier */
+.play-icon-find {
+  background: #F5FDF8;
+}
+.magnifier-glass {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid #6B9DB8;
+}
+.magnifier-handle {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 12px;
+  height: 3px;
+  background: #6B9DB8;
+  border-radius: 2px;
+  transform: rotate(-45deg);
+}
+/* Quiz - question mark */
+.play-icon-quiz {
+  background: #FDF5F8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.quiz-mark {
+  font-size: 26px;
+  font-weight: 800;
+  color: #D4856A;
+  font-family: inherit;
+  line-height: 1;
+}
+
+/* ====== PLAY SCREEN ====== */
+#play {
+  background: #FAFAF8;
+}
+.play-screen-inner {
+  flex: 1;
+  padding: 60px 28px 100px;
+  overflow-y: auto;
+}
+.play-screen-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 8px;
+}
+.play-screen-sub {
+  font-size: 13px;
+  color: #BBB;
+  margin-bottom: 32px;
+}
+
+/* ====== CONTENT ====== */
+#content {
+  background: #FAFAF8;
+}
+.content-inner {
+  flex: 1;
+  padding: 60px 28px 100px;
+  overflow-y: auto;
+}
+.content-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 28px;
+}
+.category-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 36px;
+  overflow-x: auto;
+}
+.category-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  font-size: 10px;
+  font-family: inherit;
+  border: 2px solid #E5E5E3;
+  border-radius: 12px;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.category-tab::before {
+  content: attr(data-char);
+  display: none;
+}
+.category-tab-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.category-tab-img[src=""] { display: none; }
+.category-tab-img[src=""] + .category-tab-fallback { display: flex; }
+.category-tab-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  color: #FFF;
+}
+.category-tab[data-cat="emotion"]::before { background: #D4856A; }
+.category-tab[data-cat="social"]::before { background: #6B9DB8; }
+.category-tab[data-cat="thinking"]::before { background: #C4A060; }
+.category-tab[data-cat="calm"]::before { background: #7BA878; }
+.category-tab.active {
+  border-color: currentColor;
+  background: #F8F8F6;
+}
+.category-tab[data-cat="emotion"].active { border-color: #D4856A; color: #D4856A; }
+.category-tab[data-cat="social"].active { border-color: #6B9DB8; color: #6B9DB8; }
+.category-tab[data-cat="thinking"].active { border-color: #C4A060; color: #C4A060; }
+.category-tab[data-cat="calm"].active { border-color: #7BA878; color: #7BA878; }
+.episode-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.episode-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: #FFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.episode-item:active { transform: scale(0.98); }
+.episode-num {
+  font-size: 13px;
+  font-weight: 700;
+  min-width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(212,133,106,0.15);
+  color: #D4856A;
+}
+.episode-info { flex: 1; }
+.episode-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin-bottom: 4px;
+}
+.episode-duration {
+  font-size: 11px;
+  color: #999;
+}
+.episode-lock {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #CCC;
+  border-radius: 2px;
+  position: relative;
+}
+.episode-lock::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: 3px;
+  width: 8px; height: 8px;
+  border: 1.5px solid #CCC;
+  border-radius: 8px 8px 0 0;
+  border-bottom: none;
+}
+
+/* ====== EPISODE PLAYER ====== */
+#player {
+  background: #1A1A1A;
+  justify-content: center;
+  align-items: center;
+}
+.player-content {
+  text-align: center;
+  color: #FAFAF8;
+}
+.player-char {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #C4856C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #FFF;
+  margin: 0 auto 24px;
+  overflow: hidden;
+}
+.player-char img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.player-char { position: relative; }
+.player-char img[src=""] { display: none; }
+.player-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.player-sub {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 32px;
+}
+.player-progress {
+  width: 200px;
+  height: 2px;
+  background: #333;
+  margin: 0 auto;
+  border-radius: 1px;
+  overflow: hidden;
+}
+.player-progress-fill {
+  height: 100%;
+  background: #FAFAF8;
+  width: 0%;
+  transition: width 3s linear;
+}
+
+/* ====== BLACKOUT ====== */
+#blackout {
+  background: #000000;
+  justify-content: center;
+  align-items: center;
+}
+.blackout-text {
+  font-size: 14px;
+  color: #555;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.blackout-text.visible { opacity: 1; }
+
+/* ====== HANDOFF ====== */
+#handoff {
+  background: #FAFAF8;
+  padding: 60px 28px;
+  overflow-y: auto;
+}
+.handoff-char {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 16px;
+}
+.handoff-char[src=""] { display: none; }
+.handoff-label {
+  font-size: 12px;
+  color: #C4856C;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+.handoff-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.handoff-context {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+.script-block {
+  background: #FFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border-radius: 4px;
+  padding: 28px 24px;
+  margin-bottom: 16px;
+}
+.script-speaker {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.script-line {
+  font-size: 16px;
+  color: #1A1A1A;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.handoff-tip {
+  margin-top: 32px;
+  padding: 20px 24px;
+  background: transparent;
+}
+.handoff-tip-label {
+  font-size: 12px;
+  color: #C4856C;
+  margin-bottom: 8px;
+}
+.handoff-tip-text {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.6;
+}
+.handoff-done {
+  margin-top: 40px;
+  width: 100%;
+  padding: 16px;
+  background: #1A1A1A;
+  color: #FAFAF8;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ====== FOREST ====== */
+#forest {
+  background: #FAFAF8;
+}
+.forest-inner {
+  flex: 1;
+  padding: 60px 28px 100px;
+  overflow-y: auto;
+}
+.forest-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 8px;
+}
+.forest-subtitle {
+  font-size: 11px;
+  color: #BBB;
+  margin-bottom: 20px;
+}
+.forest-lineup {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.forest-lineup img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #F0F0EE;
+}
+.forest-lineup img[src=""] { display: none; }
+.forest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.tree-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.tree-visual {
+  width: 56px;
+  height: 76px;
+  position: relative;
+  margin-bottom: 6px;
+}
+.tree-trunk {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 28px;
+  background: #C4B89B;
+  border-radius: 2px;
+}
+.tree-crown {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+.tree-crown.emotion { background: #D4856A; border-radius: 50%; }
+.tree-crown.social { background: #6B9DB8; border-radius: 50% 50% 50% 20%; }
+.tree-crown.thinking { background: #C4A060; border-radius: 30% 70% 50% 50%; }
+.tree-crown.calm { background: #7BA878; border-radius: 50% 50% 30% 30%; }
+.tree-crown.locked {
+  background: transparent;
+  border: 2px dashed #DDD;
+}
+.tree-name {
+  font-size: 9px;
+  color: #BBB;
+}
+.tree-name.locked-name { color: #DDD; }
+.tree-detail {
+  display: none;
+  background: #FFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border-radius: 4px;
+  padding: 24px;
+  margin-top: 32px;
+}
+.tree-detail.visible { display: block; }
+.tree-detail-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 8px;
+}
+.tree-detail-desc {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.6;
+}
+
+/* ====== PARENT SPACE ====== */
+#parent-pin {
+  background: #141414;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 40px;
+}
+.pin-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #EBEBEB;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.pin-sub {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 48px;
+  text-align: center;
+}
+.pin-dots {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.pin-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid #555;
+  transition: all 0.2s;
+}
+.pin-dot.filled {
+  background: #C4856C;
+  border-color: #C4856C;
+}
+.pin-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 240px;
+}
+.pin-key {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #EBEBEB;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 1px solid #333;
+  background: transparent;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.pin-key:active { background: #2A2A2A; }
+.pin-key.empty { border: none; pointer-events: none; }
+.pin-key.backspace { font-size: 14px; border: none; }
+
+#parent {
+  background: #141414;
+}
+.parent-inner {
+  flex: 1;
+  padding: 60px 28px 100px;
+  overflow-y: auto;
+}
+.parent-header {
+  margin-bottom: 40px;
+}
+.parent-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #EBEBEB;
+  margin-bottom: 4px;
+}
+.parent-sub {
+  font-size: 13px;
+  color: #555;
+}
+.parent-section-label {
+  font-size: 11px;
+  color: #555;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  margin-top: 32px;
+}
+.parent-card {
+  background: #1E1E1E;
+  border-radius: 4px;
+  padding: 24px;
+  margin-bottom: 12px;
+}
+.parent-card-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #EBEBEB;
+  margin-bottom: 16px;
+}
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.progress-label {
+  font-size: 12px;
+  color: #777;
+  min-width: 48px;
+}
+.progress-bar {
+  flex: 1;
+  height: 3px;
+  background: #2A2A2A;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.progress-fill.emotion { background: #D4856A; }
+.progress-fill.social { background: #6B9DB8; }
+.progress-fill.thinking { background: #C4A060; }
+.progress-fill.calm { background: #7BA878; }
+.progress-value {
+  font-size: 12px;
+  color: #555;
+  min-width: 32px;
+  text-align: right;
+}
+.insight-text {
+  font-size: 14px;
+  color: #EBEBEB;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+.insight-sub {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.5;
+}
+.parent-guide-preview {
+  padding: 20px 24px;
+  background: #1E1E1E;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.guide-preview-title {
+  font-size: 13px;
+  color: #C4856C;
+  margin-bottom: 8px;
+}
+.guide-preview-text {
+  font-size: 14px;
+  color: #EBEBEB;
+  line-height: 1.6;
+}
+.premium-banner {
+  background: #1E1E1E;
+  border-radius: 4px;
+  padding: 28px 24px;
+  margin-top: 24px;
+  text-align: center;
+}
+.premium-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #EBEBEB;
+  margin-bottom: 8px;
+}
+.premium-desc {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.premium-btn {
+  display: inline-block;
+  padding: 12px 32px;
+  background: #C4856C;
+  color: #FFF;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.parent-back {
+  margin-top: 32px;
+  background: none;
+  border: 1px solid #333;
+  color: #777;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Parent tab bar override */
+.tab-bar.dark {
+  background: #1E1E1E;
+  border-top-color: #2A2A2A;
+}
+.tab-bar.dark .tab-label { color: #777; }
+.tab-bar.dark .tab-icon { color: #777; }
+.tab-bar.dark .tab-item.active .tab-icon { color: #C4856C; }
+.tab-bar.dark .tab-item.active .tab-label { color: #EBEBEB; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ONBOARDING -->
+  <div id="onboarding" class="screen active">
+    <div class="onboard-step active" data-step="1">
+      <span class="onboard-label">Step 1 / 4</span>
+      <h1 class="onboard-question">아이의 이름을<br>알려주세요.</h1>
+      <input class="onboard-input" type="text" placeholder="이름" id="child-name-input">
+      <button class="onboard-next" id="next-1">다음</button>
+    </div>
+    <div class="onboard-step" data-step="2">
+      <span class="onboard-label">Step 2 / 4</span>
+      <h1 class="onboard-question">몇 살인가요?</h1>
+      <div class="onboard-choices" id="age-choices">
+        <button class="onboard-choice" data-value="3">만 3세</button>
+        <button class="onboard-choice" data-value="4">만 4세</button>
+        <button class="onboard-choice" data-value="5">만 5세</button>
+      </div>
+      <button class="onboard-next" id="next-2">다음</button>
+    </div>
+    <div class="onboard-step" data-step="3">
+      <span class="onboard-label">Step 3 / 4</span>
+      <h1 class="onboard-question">요즘 가장<br>걱정되는 건?</h1>
+      <div class="onboard-choices" id="concern-choices">
+        <button class="onboard-choice" data-value="emotion">감정 조절이 어려워요</button>
+        <button class="onboard-choice" data-value="social">친구와 잘 어울리지 못해요</button>
+        <button class="onboard-choice" data-value="thinking">집중력이 부족해요</button>
+        <button class="onboard-choice" data-value="sleep">잠들기가 힘들어요</button>
+      </div>
+      <button class="onboard-next" id="next-3">다음</button>
+    </div>
+    <div class="onboard-step onboard-result" data-step="4">
+      <h1 class="onboard-question" id="result-text"></h1>
+      <p class="result-sub">개인 맞춤 커리큘럼이 준비되었습니다.</p>
+      <button class="onboard-start" id="start-app">시작하기</button>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <div id="home" class="screen">
+    <div class="home-content">
+      <div class="home-header">
+        <p class="home-greeting">좋은 아침이에요</p>
+        <h1 class="home-name" id="home-child-name"></h1>
+        <div class="home-forest-status">
+          <span class="forest-indicator"></span>
+          <span class="forest-text">마음숲에 나무 3그루가 자라고 있어요</span>
+        </div>
+      </div>
+      <div class="mission-card">
+        <p class="mission-label">Today's Mission</p>
+        <h2 class="mission-title">화가 날 때, 숨을 쉬어볼까?</h2>
+        <p class="mission-desc">햄햄이와 함께 화가 났을 때 할 수 있는 호흡법을 배워요.</p>
+        <div class="mission-character">
+          <span class="char-badge ham"><img src="../assets/characters/hamhami.jpeg" alt="햄햄이" onerror="this.style.display='none'">햄</span>
+          <span class="mission-char-name">햄햄이 — 감정 이야기</span>
+        </div>
+        <button class="mission-start" id="start-mission">시작하기</button>
+      </div>
+
+      <div class="play-section">
+        <p class="play-section-label">놀이</p>
+        <div class="play-grid">
+          <div class="play-card">
+            <div class="play-icon play-icon-coloring">
+              <span class="palette-dot" style="background:#D4856A;top:4px;left:4px;"></span>
+              <span class="palette-dot" style="background:#6B9DB8;top:4px;right:4px;"></span>
+              <span class="palette-dot" style="background:#C4A060;bottom:4px;left:4px;"></span>
+              <span class="palette-dot" style="background:#7BA878;bottom:4px;right:4px;"></span>
+            </div>
+            <span class="play-card-label">색칠놀이</span>
+          </div>
+          <div class="play-card">
+            <div class="play-icon play-icon-writing">
+              <span class="pencil-body"></span>
+              <span class="pencil-tip"></span>
+            </div>
+            <span class="play-card-label">글씨 따라쓰기</span>
+          </div>
+          <div class="play-card">
+            <div class="play-icon play-icon-find">
+              <span class="magnifier-glass"></span>
+              <span class="magnifier-handle"></span>
+            </div>
+            <span class="play-card-label">틀린그림찾기</span>
+          </div>
+          <div class="play-card">
+            <div class="play-icon play-icon-quiz">
+              <span class="quiz-mark">?</span>
+            </div>
+            <span class="play-card-label">미니퀴즈</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-bar" id="tab-bar-main">
+      <div class="tab-item icon-home active" data-tab="home">
+        <div class="tab-icon"></div>
+        <span class="tab-label">홈</span>
+      </div>
+      <div class="tab-item icon-content" data-tab="content">
+        <div class="tab-icon"></div>
+        <span class="tab-label">콘텐츠</span>
+      </div>
+      <div class="tab-item icon-play" data-tab="play">
+        <div class="tab-icon"></div>
+        <span class="tab-label">놀이</span>
+      </div>
+      <div class="tab-item icon-forest" data-tab="forest">
+        <div class="tab-icon"></div>
+        <span class="tab-label">마음숲</span>
+      </div>
+      <div class="tab-item icon-parent" data-tab="parent-pin">
+        <div class="tab-icon"></div>
+        <span class="tab-label">부모</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content" class="screen">
+    <div class="content-inner">
+      <h1 class="content-title">콘텐츠</h1>
+      <div class="category-tabs">
+        <button class="category-tab active" data-cat="emotion" data-char="햄"><img class="category-tab-img" src="../assets/characters/hamhami.jpeg" alt="햄햄이" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="category-tab-fallback" style="display:none;background:#D4856A;">햄</span>감정</button>
+        <button class="category-tab" data-cat="social" data-char="리"><img class="category-tab-img" src="../assets/characters/ttori.jpeg" alt="또리" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="category-tab-fallback" style="display:none;background:#6B9DB8;">리</span>사회성</button>
+        <button class="category-tab" data-cat="thinking" data-char="비"><img class="category-tab-img" src="../assets/characters/bubi.jpeg" alt="부비" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="category-tab-fallback" style="display:none;background:#C4A060;">비</span>사고력</button>
+        <button class="category-tab" data-cat="calm" data-char="포"><img class="category-tab-img" src="../assets/characters/popo.jpeg" alt="포포" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="category-tab-fallback" style="display:none;background:#7BA878;">포</span>안정</button>
+      </div>
+      <div class="episode-list" id="episode-list">
+        <div class="episode-item" data-playable="true">
+          <span class="episode-num">01</span>
+          <div class="episode-info">
+            <p class="episode-title">화가 날 때, 숨을 쉬어볼까?</p>
+            <span class="episode-duration">3분</span>
+          </div>
+        </div>
+        <div class="episode-item" data-playable="true">
+          <span class="episode-num">02</span>
+          <div class="episode-info">
+            <p class="episode-title">슬플 때는 울어도 괜찮아</p>
+            <span class="episode-duration">4분</span>
+          </div>
+        </div>
+        <div class="episode-item" data-playable="false">
+          <span class="episode-num">03</span>
+          <div class="episode-info">
+            <p class="episode-title">기쁜 마음을 나눠볼까?</p>
+            <span class="episode-duration">3분</span>
+          </div>
+          <div class="episode-lock"></div>
+        </div>
+        <div class="episode-item" data-playable="false">
+          <span class="episode-num">04</span>
+          <div class="episode-info">
+            <p class="episode-title">무서울 때 안전한 곳 찾기</p>
+            <span class="episode-duration">4분</span>
+          </div>
+          <div class="episode-lock"></div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <div class="tab-item icon-home" data-tab="home">
+        <div class="tab-icon"></div>
+        <span class="tab-label">홈</span>
+      </div>
+      <div class="tab-item icon-content active" data-tab="content">
+        <div class="tab-icon"></div>
+        <span class="tab-label">콘텐츠</span>
+      </div>
+      <div class="tab-item icon-play" data-tab="play">
+        <div class="tab-icon"></div>
+        <span class="tab-label">놀이</span>
+      </div>
+      <div class="tab-item icon-forest" data-tab="forest">
+        <div class="tab-icon"></div>
+        <span class="tab-label">마음숲</span>
+      </div>
+      <div class="tab-item icon-parent" data-tab="parent-pin">
+        <div class="tab-icon"></div>
+        <span class="tab-label">부모</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAYER -->
+  <div id="player" class="screen">
+    <div class="player-content">
+      <div class="player-char"><img src="../assets/characters/hamhami.jpeg" alt="햄햄이" onerror="this.style.display='none'">햄</div>
+      <p class="player-title">화가 날 때, 숨을 쉬어볼까?</p>
+      <p class="player-sub">햄햄이와 함께하는 호흡 이야기</p>
+      <div class="player-progress">
+        <div class="player-progress-fill" id="player-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLACKOUT -->
+  <div id="blackout" class="screen">
+    <p class="blackout-text" id="blackout-text">에피소드가 끝났습니다</p>
+  </div>
+
+  <!-- HANDOFF -->
+  <div id="handoff" class="screen">
+    <img class="handoff-char" src="../assets/characters/hamhami.jpeg" alt="햄햄이" onerror="this.style.display='none'">
+    <span class="handoff-label">Parent Handoff</span>
+    <h1 class="handoff-title">지금이 대화의<br>가장 좋은 순간이에요.</h1>
+    <p class="handoff-context">아이가 방금 '화가 날 때 호흡하기'를 배웠습니다. 아래 대사를 자연스럽게 건네보세요.</p>
+    <div class="script-block">
+      <p class="script-speaker">부모 대사 1</p>
+      <p class="script-line">"햄햄이가 알려준 거 기억나? 코로 후—하고 불면 마음이 편해진대. 우리도 같이 해볼까?"</p>
+    </div>
+    <div class="script-block">
+      <p class="script-speaker">부모 대사 2</p>
+      <p class="script-line">"오늘 화났을 때 이렇게 해보는 거야. 엄마(아빠)도 같이 할게."</p>
+    </div>
+    <div class="handoff-tip">
+      <p class="handoff-tip-label">Tip</p>
+      <p class="handoff-tip-text">아이의 눈높이에 맞춰 앉아서, 같이 호흡을 따라해보세요. 3회 정도 반복이 효과적입니다.</p>
+    </div>
+    <button class="handoff-done" id="handoff-done">완료하고 홈으로</button>
+  </div>
+
+  <!-- FOREST (마음숲) -->
+  <div id="forest" class="screen">
+    <div class="forest-inner">
+      <h1 class="forest-title">마음숲</h1>
+      <p class="forest-subtitle">감정을 배울 때마다 나무가 자라요</p>
+      <div class="forest-lineup">
+        <img src="../assets/characters/hamhami.jpeg" alt="햄햄이" onerror="this.style.display='none'">
+        <img src="../assets/characters/bubi.jpeg" alt="부비" onerror="this.style.display='none'">
+        <img src="../assets/characters/ttori.jpeg" alt="또리" onerror="this.style.display='none'">
+        <img src="../assets/characters/popo.jpeg" alt="포포" onerror="this.style.display='none'">
+        <img src="../assets/characters/gongbueng.jpeg" alt="공부엉" onerror="this.style.display='none'">
+      </div>
+      <div class="forest-grid">
+        <div class="tree-item" data-tree="1">
+          <div class="tree-visual">
+            <div class="tree-crown emotion"></div>
+            <div class="tree-trunk"></div>
+          </div>
+          <span class="tree-name">용기 나무</span>
+        </div>
+        <div class="tree-item" data-tree="2">
+          <div class="tree-visual">
+            <div class="tree-crown social"></div>
+            <div class="tree-trunk"></div>
+          </div>
+          <span class="tree-name">친절 나무</span>
+        </div>
+        <div class="tree-item" data-tree="3">
+          <div class="tree-visual">
+            <div class="tree-crown calm"></div>
+            <div class="tree-trunk"></div>
+          </div>
+          <span class="tree-name">평온 나무</span>
+        </div>
+        <div class="tree-item" data-tree="4">
+          <div class="tree-visual">
+            <div class="tree-crown locked"></div>
+            <div class="tree-trunk"></div>
+          </div>
+          <span class="tree-name locked-name">???</span>
+        </div>
+        <div class="tree-item" data-tree="5">
+          <div class="tree-visual">
+            <div class="tree-crown locked"></div>
+            <div class="tree-trunk"></div>
+          </div>
+          <span class="tree-name locked-name">???</span>
+        </div>
+        <div class="tree-item" data-tree="6">
+          <div class="tree-visual">
+            <div class="tree-crown locked"></div>
+            <div class="tree-trunk"></div>
+          </div>
+          <span class="tree-name locked-name">???</span>
+        </div>
+      </div>
+      <div class="tree-detail" id="tree-detail">
+        <p class="tree-detail-title" id="tree-detail-title"></p>
+        <p class="tree-detail-desc" id="tree-detail-desc"></p>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <div class="tab-item icon-home" data-tab="home">
+        <div class="tab-icon"></div>
+        <span class="tab-label">홈</span>
+      </div>
+      <div class="tab-item icon-content" data-tab="content">
+        <div class="tab-icon"></div>
+        <span class="tab-label">콘텐츠</span>
+      </div>
+      <div class="tab-item icon-play" data-tab="play">
+        <div class="tab-icon"></div>
+        <span class="tab-label">놀이</span>
+      </div>
+      <div class="tab-item icon-forest active" data-tab="forest">
+        <div class="tab-icon"></div>
+        <span class="tab-label">마음숲</span>
+      </div>
+      <div class="tab-item icon-parent" data-tab="parent-pin">
+        <div class="tab-icon"></div>
+        <span class="tab-label">부모</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAY (놀이) -->
+  <div id="play" class="screen">
+    <div class="play-screen-inner">
+      <h1 class="play-screen-title">놀이</h1>
+      <p class="play-screen-sub">오늘은 무엇을 하며 놀까요?</p>
+      <div class="play-grid">
+        <div class="play-card">
+          <div class="play-icon play-icon-coloring">
+            <span class="palette-dot" style="background:#D4856A;top:4px;left:4px;"></span>
+            <span class="palette-dot" style="background:#6B9DB8;top:4px;right:4px;"></span>
+            <span class="palette-dot" style="background:#C4A060;bottom:4px;left:4px;"></span>
+            <span class="palette-dot" style="background:#7BA878;bottom:4px;right:4px;"></span>
+          </div>
+          <span class="play-card-label">색칠놀이</span>
+        </div>
+        <div class="play-card">
+          <div class="play-icon play-icon-writing">
+            <span class="pencil-body"></span>
+            <span class="pencil-tip"></span>
+          </div>
+          <span class="play-card-label">글씨 따라쓰기</span>
+        </div>
+        <div class="play-card">
+          <div class="play-icon play-icon-find">
+            <span class="magnifier-glass"></span>
+            <span class="magnifier-handle"></span>
+          </div>
+          <span class="play-card-label">틀린그림찾기</span>
+        </div>
+        <div class="play-card">
+          <div class="play-icon play-icon-quiz">
+            <span class="quiz-mark">?</span>
+          </div>
+          <span class="play-card-label">미니퀴즈</span>
+        </div>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <div class="tab-item icon-home" data-tab="home">
+        <div class="tab-icon"></div>
+        <span class="tab-label">홈</span>
+      </div>
+      <div class="tab-item icon-content" data-tab="content">
+        <div class="tab-icon"></div>
+        <span class="tab-label">콘텐츠</span>
+      </div>
+      <div class="tab-item icon-play active" data-tab="play">
+        <div class="tab-icon"></div>
+        <span class="tab-label">놀이</span>
+      </div>
+      <div class="tab-item icon-forest" data-tab="forest">
+        <div class="tab-icon"></div>
+        <span class="tab-label">마음숲</span>
+      </div>
+      <div class="tab-item icon-parent" data-tab="parent-pin">
+        <div class="tab-icon"></div>
+        <span class="tab-label">부모</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARENT PIN -->
+  <div id="parent-pin" class="screen">
+    <h2 class="pin-title">부모 공간</h2>
+    <p class="pin-sub">PIN 4자리를 입력하세요</p>
+    <div class="pin-dots">
+      <span class="pin-dot"></span>
+      <span class="pin-dot"></span>
+      <span class="pin-dot"></span>
+      <span class="pin-dot"></span>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" data-num="1">1</button>
+      <button class="pin-key" data-num="2">2</button>
+      <button class="pin-key" data-num="3">3</button>
+      <button class="pin-key" data-num="4">4</button>
+      <button class="pin-key" data-num="5">5</button>
+      <button class="pin-key" data-num="6">6</button>
+      <button class="pin-key" data-num="7">7</button>
+      <button class="pin-key" data-num="8">8</button>
+      <button class="pin-key" data-num="9">9</button>
+      <button class="pin-key empty"></button>
+      <button class="pin-key" data-num="0">0</button>
+      <button class="pin-key backspace" id="pin-back">&#x232B;</button>
+    </div>
+  </div>
+
+  <!-- PARENT DASHBOARD -->
+  <div id="parent" class="screen">
+    <div class="parent-inner">
+      <div class="parent-header">
+        <h1 class="parent-title">부모 공간</h1>
+        <p class="parent-sub">주간 리포트 — 4월 3주차</p>
+      </div>
+
+      <p class="parent-section-label">이번 주 진행률</p>
+      <div class="parent-card">
+        <div class="progress-row">
+          <span class="progress-label">감정</span>
+          <div class="progress-bar"><div class="progress-fill emotion" style="width:72%"></div></div>
+          <span class="progress-value">72%</span>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">사회성</span>
+          <div class="progress-bar"><div class="progress-fill social" style="width:45%"></div></div>
+          <span class="progress-value">45%</span>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">사고력</span>
+          <div class="progress-bar"><div class="progress-fill thinking" style="width:30%"></div></div>
+          <span class="progress-value">30%</span>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">안정</span>
+          <div class="progress-bar"><div class="progress-fill calm" style="width:60%"></div></div>
+          <span class="progress-value">60%</span>
+        </div>
+      </div>
+
+      <p class="parent-section-label">인사이트</p>
+      <div class="parent-card">
+        <p class="insight-text">감정 영역에서 큰 진전을 보이고 있어요.</p>
+        <p class="insight-sub">특히 '화가 날 때 호흡하기' 에피소드 이후 반복 시청률이 높습니다. 일상에서도 자연스럽게 연습할 수 있도록 대화를 이어가보세요.</p>
+      </div>
+
+      <p class="parent-section-label">오늘의 가이드 미리보기</p>
+      <div class="parent-guide-preview">
+        <p class="guide-preview-title">대화 스크립트 준비됨</p>
+        <p class="guide-preview-text">"오늘 어떤 기분이었어?" 라고 열린 질문으로 시작해보세요.</p>
+      </div>
+
+      <div class="premium-banner">
+        <p class="premium-title">프리미엄으로 더 깊이</p>
+        <p class="premium-desc">전문가 해설, 월간 발달 리포트,<br>맞춤 커리큘럼 설계</p>
+        <button class="premium-btn">자세히 보기</button>
+      </div>
+
+      <button class="parent-back" id="parent-back">아이 공간으로 돌아가기</button>
+    </div>
+    <div class="tab-bar dark">
+      <div class="tab-item icon-home" data-tab="home">
+        <div class="tab-icon"></div>
+        <span class="tab-label">홈</span>
+      </div>
+      <div class="tab-item icon-content" data-tab="content">
+        <div class="tab-icon"></div>
+        <span class="tab-label">콘텐츠</span>
+      </div>
+      <div class="tab-item icon-play" data-tab="play">
+        <div class="tab-icon"></div>
+        <span class="tab-label">놀이</span>
+      </div>
+      <div class="tab-item icon-forest" data-tab="forest">
+        <div class="tab-icon"></div>
+        <span class="tab-label">마음숲</span>
+      </div>
+      <div class="tab-item icon-parent active" data-tab="parent-pin">
+        <div class="tab-icon"></div>
+        <span class="tab-label">부모</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  // State
+  let childName = '';
+  let childAge = '';
+  let concern = '';
+  let pinCode = '';
+
+  const treeData = {
+    1: { title: '용기 나무', desc: '화가 났을 때 스스로 감정을 표현하는 법을 배우며 자랐어요. 에피소드 1 완료 후 생겨났습니다.' },
+    2: { title: '친절 나무', desc: '친구에게 먼저 인사하는 법을 배우며 자랐어요. 또리와 함께한 이야기에서 생겨났습니다.' },
+    3: { title: '평온 나무', desc: '잠들기 전 마음을 편안하게 만드는 법을 배우며 자랐어요. 포포와의 시간에서 생겨났습니다.' }
+  };
+
+  // Screen management
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(function(s) {
+      s.classList.remove('active');
+      s.style.display = 'none';
+      s.style.opacity = '0';
+    });
+    var el = document.getElementById(id);
+    el.style.display = 'flex';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        el.style.opacity = '1';
+        el.classList.add('active');
+      });
+    });
+  }
+
+  // Onboarding
+  function showStep(n) {
+    document.querySelectorAll('.onboard-step').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    var step = document.querySelector('[data-step="' + n + '"]');
+    step.style.display = 'flex';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        step.classList.add('active');
+      });
+    });
+  }
+
+  // Step 1
+  var nameInput = document.getElementById('child-name-input');
+  var next1 = document.getElementById('next-1');
+  nameInput.addEventListener('input', function() {
+    if (nameInput.value.trim().length > 0) {
+      next1.classList.add('enabled');
+    } else {
+      next1.classList.remove('enabled');
+    }
+  });
+  next1.addEventListener('click', function() {
+    if (!next1.classList.contains('enabled')) return;
+    childName = nameInput.value.trim();
+    showStep(2);
+  });
+
+  // Step 2
+  var next2 = document.getElementById('next-2');
+  document.getElementById('age-choices').addEventListener('click', function(e) {
+    if (!e.target.classList.contains('onboard-choice')) return;
+    document.querySelectorAll('#age-choices .onboard-choice').forEach(function(c) { c.classList.remove('selected'); });
+    e.target.classList.add('selected');
+    childAge = e.target.dataset.value;
+    next2.classList.add('enabled');
+  });
+  next2.addEventListener('click', function() {
+    if (!next2.classList.contains('enabled')) return;
+    showStep(3);
+  });
+
+  // Step 3
+  var next3 = document.getElementById('next-3');
+  document.getElementById('concern-choices').addEventListener('click', function(e) {
+    if (!e.target.classList.contains('onboard-choice')) return;
+    document.querySelectorAll('#concern-choices .onboard-choice').forEach(function(c) { c.classList.remove('selected'); });
+    e.target.classList.add('selected');
+    concern = e.target.dataset.value;
+    next3.classList.add('enabled');
+  });
+  next3.addEventListener('click', function() {
+    if (!next3.classList.contains('enabled')) return;
+    document.getElementById('result-text').textContent = childName + '이를 위한\n프로그램을 설계했습니다.';
+    document.getElementById('result-text').innerHTML = childName + '이를 위한<br>프로그램을 설계했습니다.';
+    showStep(4);
+  });
+
+  // Start app
+  document.getElementById('start-app').addEventListener('click', function() {
+    document.getElementById('home-child-name').textContent = childName + '의 하루';
+    showScreen('home');
+  });
+
+  // Tab navigation
+  document.querySelectorAll('.tab-item').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var target = tab.dataset.tab;
+      showScreen(target);
+    });
+  });
+
+  // Mission start / Episode play
+  document.getElementById('start-mission').addEventListener('click', function() {
+    startPlayer();
+  });
+
+  document.querySelectorAll('.episode-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      if (item.dataset.playable === 'true') {
+        startPlayer();
+      }
+    });
+  });
+
+  function startPlayer() {
+    showScreen('player');
+    var fill = document.getElementById('player-fill');
+    fill.style.width = '0%';
+    requestAnimationFrame(function() {
+      fill.style.width = '100%';
+    });
+    setTimeout(function() {
+      showScreen('blackout');
+      setTimeout(function() {
+        document.getElementById('blackout-text').classList.add('visible');
+      }, 800);
+      setTimeout(function() {
+        document.getElementById('blackout-text').classList.remove('visible');
+        showScreen('handoff');
+      }, 3000);
+    }, 3200);
+  }
+
+  // Handoff done
+  document.getElementById('handoff-done').addEventListener('click', function() {
+    showScreen('home');
+  });
+
+  // Forest tree detail
+  document.querySelectorAll('.tree-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var id = item.dataset.tree;
+      var detail = document.getElementById('tree-detail');
+      if (treeData[id]) {
+        document.getElementById('tree-detail-title').textContent = treeData[id].title;
+        document.getElementById('tree-detail-desc').textContent = treeData[id].desc;
+        detail.classList.add('visible');
+      } else {
+        detail.classList.remove('visible');
+      }
+    });
+  });
+
+  // PIN
+  var pinDots = document.querySelectorAll('.pin-dot');
+  document.querySelectorAll('.pin-key[data-num]').forEach(function(key) {
+    key.addEventListener('click', function() {
+      if (pinCode.length >= 4) return;
+      pinCode += key.dataset.num;
+      updatePinDots();
+      if (pinCode.length === 4) {
+        setTimeout(function() {
+          showScreen('parent');
+          pinCode = '';
+          updatePinDots();
+        }, 300);
+      }
+    });
+  });
+  document.getElementById('pin-back').addEventListener('click', function() {
+    pinCode = pinCode.slice(0, -1);
+    updatePinDots();
+  });
+  function updatePinDots() {
+    pinDots.forEach(function(dot, i) {
+      if (i < pinCode.length) {
+        dot.classList.add('filled');
+      } else {
+        dot.classList.remove('filled');
+      }
+    });
+  }
+
+  // Parent back
+  document.getElementById('parent-back').addEventListener('click', function() {
+    showScreen('home');
+  });
+
+  // Category tabs
+  document.querySelectorAll('.category-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.category-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+    });
+  });
+
+  // URL 파라미터로 특정 화면으로 바로 이동
+  var params = new URLSearchParams(window.location.search);
+  var startScreen = params.get('screen');
+  if (startScreen) {
+    childName = '서연';
+    document.getElementById('home-child-name').textContent = childName + '의 하루';
+    showScreen(startScreen);
+  }
+
+})();
+</script>
+</body>
+</html>
