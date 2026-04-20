@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공부엉즈 — 피치 덱</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FAFAF8;
+  --text: #1A1A1A;
+  --muted: #6B6B6B;
+  --accent: #C4856C;
+}
+
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  background: #000;
+}
+
+.deck {
+  position: relative;
+  width: 100vw; height: 100vh;
+}
+
+.slide {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+  background: var(--bg);
+  color: var(--text);
+}
+.slide.active {
+  opacity: 1; pointer-events: auto;
+}
+
+.slide-inner {
+  width: 1280px; max-width: 92vw;
+  height: 720px; max-height: 88vh;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 60px 80px;
+  position: relative;
+}
+
+.slide-number {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px; color: rgba(0,0,0,0.25);
+  letter-spacing: 1px; z-index: 100;
+}
+.slide-number.dark { color: rgba(255,255,255,0.2); }
+
+/* ===== Slide 1: Cover ===== */
+#slide-1 .slide-inner {
+  align-items: center; text-align: center;
+  justify-content: center; gap: 28px;
+}
+#slide-1 .cover-img {
+  width: 520px; max-width: 70vw; border-radius: 16px;
+  object-fit: cover;
+}
+#slide-1 .cover-tagline {
+  font-size: 28px; font-weight: 600; color: var(--text);
+  line-height: 1.5;
+}
+#slide-1 .cover-brand {
+  font-size: 15px; color: var(--muted); letter-spacing: 2px;
+}
+
+/* ===== Slide 2: Problem ===== */
+#slide-2 .slide-inner {
+  flex-direction: column; justify-content: center; align-items: center; gap: 0;
+}
+.problem-top {
+  font-size: 20px; color: var(--muted); text-align: center; margin-bottom: 56px;
+}
+.problem-cols { display: flex; gap: 120px; align-items: flex-start; margin-bottom: 56px; }
+.problem-col { flex: 1; text-align: center; }
+.problem-col .emotion { font-size: 56px; font-weight: 700; margin-bottom: 16px; white-space: nowrap; }
+.problem-col .emotion-sub { font-size: 15px; color: var(--muted); line-height: 1.6; }
+.problem-footer {
+  font-size: 16px; color: var(--muted); text-align: center;
+  border-top: 1px solid #E5E5E3; padding-top: 28px;
+}
+
+/* ===== Slide 3: Market ===== */
+#slide-3 .slide-inner { align-items: center; text-align: center; gap: 24px; }
+.market-numbers { display: flex; gap: 60px; justify-content: center; margin: 32px 0; }
+.market-item .num { font-size: 52px; font-weight: 700; color: var(--text); }
+.market-item .label { font-size: 14px; color: var(--muted); margin-top: 8px; }
+.market-footer { font-size: 16px; color: var(--muted); margin-top: 24px; }
+
+/* ===== Slide 4: Solution (Scenario) ===== */
+#slide-4 .slide-inner { justify-content: center; flex-direction: row; gap: 60px; align-items: center; }
+.scenario-left { flex: 1; }
+#slide-4 h2 { font-size: 18px; font-weight: 600; color: var(--muted); margin-bottom: 16px; }
+.scenario-flow { display: flex; flex-direction: column; gap: 0; }
+.scenario-right { flex: 0 0 280px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.scenario-right img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; }
+.scenario-push { background: #f5f5f3; border-radius: 12px; padding: 20px 24px; width: 100%; }
+.scenario-push .push-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.5px; }
+.scenario-push .push-text { font-size: 15px; color: var(--text); line-height: 1.6; font-weight: 500; }
+.scenario-step {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 16px 0; position: relative;
+}
+.scenario-step::before {
+  content: ''; position: absolute; left: 11px; top: 40px;
+  width: 2px; height: calc(100% - 24px); background: #e0e0e0;
+}
+.scenario-step:last-child::before { display: none; }
+.step-dot {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #e8e8e8; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--muted); font-weight: 600;
+}
+.step-text { font-size: 17px; line-height: 1.7; color: #333; }
+.step-text .bubble {
+  display: inline-block; background: var(--accent); color: #fff;
+  padding: 5px 16px; border-radius: 14px; font-size: 14px; margin-top: 6px;
+}
+
+/* ===== Demo slides ===== */
+.slide-demo { background: #1A1A1A !important; }
+.slide-demo .slide-inner {
+  flex-direction: row; align-items: center; gap: 40px;
+  padding: 24px 40px; max-height: 100vh; height: 100vh;
+}
+.demo-left {
+  flex: 0 0 28%; align-self: center;
+}
+.demo-left h2 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.demo-left p { font-size: 13px; color: #999; line-height: 1.8; }
+.demo-left .demo-cta { color: var(--accent); font-size: 13px; margin-top: 16px; font-weight: 500; }
+.demo-right {
+  flex: 0 0 auto;
+  width: 402px; height: 85vh; max-height: 780px;
+  border-radius: 32px; overflow: hidden;
+  background: #111; border: 6px solid #333;
+  box-shadow: 0 0 0 2px #222, 0 20px 60px rgba(0,0,0,0.5);
+  display: flex; align-items: stretch; justify-content: center;
+}
+.demo-right iframe {
+  width: 390px; height: 100%; border: none; display: none;
+}
+.slide-demo.active .demo-right iframe { display: block; }
+
+/* ===== Slide 6: Core Flow ===== */
+#slide-6 .slide-inner { align-items: center; text-align: center; gap: 32px; justify-content: center; }
+.flow-steps { display: flex; gap: 24px; align-items: center; justify-content: center; }
+.flow-step {
+  background: #f0f0ee; border-radius: 12px; padding: 28px 24px;
+  width: 180px; text-align: center;
+}
+.flow-step .flow-icon { font-size: 28px; margin-bottom: 10px; }
+.flow-step .flow-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.flow-step .flow-desc { font-size: 12px; color: var(--muted); }
+.flow-arrow { font-size: 20px; color: #ccc; }
+.flow-footer { font-size: 16px; color: var(--muted); }
+
+/* ===== Slide 8: Characters ===== */
+#slide-8 .slide-inner { align-items: center; text-align: center; gap: 24px; }
+.char-row { display: flex; align-items: flex-end; justify-content: center; gap: 36px; }
+.char-item { text-align: center; }
+.char-item img { border-radius: 50%; object-fit: cover; border: 3px solid #eee; }
+.char-item.main img { width: 150px; height: 150px; }
+.char-item.sub img { width: 90px; height: 90px; }
+.char-item .char-name { font-size: 14px; font-weight: 600; margin-top: 10px; color: var(--text); }
+.char-item .char-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.forest-note { font-size: 16px; color: var(--muted); margin-top: 20px; }
+
+/* ===== Slide 10: Curriculum ===== */
+#slide-10 .slide-inner { justify-content: center; gap: 20px; }
+#slide-10 h2 { font-size: 20px; font-weight: 700; }
+.casel-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.casel-table th {
+  text-align: left; padding: 10px 12px;
+  border-bottom: 2px solid #ddd; color: var(--muted); font-weight: 600;
+}
+.casel-table td {
+  padding: 10px 12px; border-bottom: 1px solid #eee; vertical-align: middle;
+}
+.casel-table td img {
+  width: 32px; height: 32px; border-radius: 50%;
+  object-fit: cover; vertical-align: middle; margin-right: 8px;
+}
+.curriculum-footer { font-size: 14px; color: var(--muted); margin-top: 12px; }
+
+/* ===== Slide 11: Competition ===== */
+#slide-11 .slide-inner { justify-content: center; gap: 20px; }
+#slide-11 h2 { font-size: 20px; font-weight: 700; }
+.comp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.comp-table th {
+  text-align: left; padding: 10px 10px;
+  border-bottom: 2px solid #ddd; color: var(--muted); font-weight: 600;
+  white-space: nowrap;
+}
+.comp-table td { padding: 10px 10px; border-bottom: 1px solid #eee; }
+.comp-table tr.highlight td { background: #FFF8F4; }
+.comp-footer { font-size: 15px; color: #444; line-height: 1.8; margin-top: 12px; }
+
+/* ===== Slide 12: Revenue ===== */
+#slide-12 .slide-inner { justify-content: center; align-items: center; text-align: center; gap: 32px; }
+#slide-12 h2 { font-size: 20px; font-weight: 700; }
+.revenue-flow { display: flex; align-items: center; justify-content: center; gap: 20px; font-size: 17px; }
+.revenue-flow span { background: #f0f0ee; padding: 12px 24px; border-radius: 8px; font-weight: 500; }
+.revenue-flow .arrow { background: none; padding: 0; color: var(--accent); font-weight: 700; font-size: 20px; }
+.revenue-price { font-size: 28px; font-weight: 700; color: var(--text); }
+.retention-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; max-width: 700px; }
+.retention-item { background: #f5f5f3; border-radius: 8px; padding: 16px 20px; text-align: left; }
+.retention-item .ret-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.retention-item .ret-desc { font-size: 12px; color: var(--muted); }
+
+/* ===== Slide 13: Goods ===== */
+#slide-13 .slide-inner { justify-content: center; gap: 20px; }
+#slide-13 h2 { font-size: 20px; font-weight: 700; }
+.goods-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.goods-card { background: #f5f5f3; border-radius: 10px; padding: 14px; text-align: center; }
+.goods-card img { width: 100%; height: 130px; border-radius: 8px; object-fit: cover; margin-bottom: 10px; }
+.goods-card .goods-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.goods-card .goods-desc { font-size: 11px; color: var(--muted); }
+.expansion-steps { display: flex; gap: 12px; align-items: center; justify-content: center; font-size: 14px; color: var(--muted); margin-top: 8px; }
+.expansion-steps .exp-step { background: #f0f0ee; padding: 8px 16px; border-radius: 8px; font-weight: 500; color: var(--text); }
+.expansion-steps .exp-arrow { color: #ccc; }
+
+/* ===== Slide 15: Execution ===== */
+#slide-15 .slide-inner { justify-content: center; gap: 28px; }
+#slide-15 h2 { font-size: 20px; font-weight: 700; }
+.timeline-row { display: flex; gap: 24px; }
+.timeline-card { flex: 1; background: #f5f5f3; border-radius: 12px; padding: 24px; }
+.timeline-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
+.timeline-card ul { list-style: none; }
+.timeline-card ul li { font-size: 13px; color: var(--muted); line-height: 1.8; }
+.timeline-card ul li::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #ccc; margin-right: 8px; }
+
+/* ===== Slide 16: Risk ===== */
+#slide-16 .slide-inner { justify-content: center; gap: 24px; }
+#slide-16 h2 { font-size: 20px; font-weight: 700; }
+.risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.risk-card { display: flex; align-items: flex-start; gap: 14px; padding: 20px; background: #f9f9f7; border-radius: 10px; }
+.risk-icon { width: 36px; height: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.risk-card .risk-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.risk-card .risk-resp { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+/* ===== Slide 17: Closing ===== */
+#slide-17 .slide-inner {
+  align-items: center; text-align: center; justify-content: center; gap: 36px;
+}
+#slide-17 img { width: 260px; height: 260px; border-radius: 50%; object-fit: cover; }
+#slide-17 .closing-text { font-size: 28px; font-weight: 600; line-height: 1.5; }
+
+/* ===== Print ===== */
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .deck { height: auto; }
+  .slide {
+    position: relative; opacity: 1; pointer-events: auto;
+    page-break-after: always; height: 100vh; break-after: page;
+  }
+  .slide-number { display: none; }
+  .slide-demo { background: #1A1A1A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .slide-demo .demo-right { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- Slide 1: Cover -->
+  <section class="slide active" id="slide-1">
+    <div class="slide-inner">
+      <img class="cover-img" src="../assets/characters/group.jpeg" alt="공부엉즈 캐릭터">
+      <p class="cover-tagline">영상이 멈추는 순간, 대화가 피어난다</p>
+      <p class="cover-brand">공부엉즈</p>
+    </div>
+  </section>
+
+  <!-- Slide 2: Problem -->
+  <section class="slide" id="slide-2">
+    <div class="slide-inner">
+      <p class="problem-top">스크린을 건네는 순간, 부모 안에 두 감정이 교차합니다</p>
+      <div class="problem-cols">
+        <div class="problem-col">
+          <div class="emotion" style="color: #BCBCBC;">안도</div>
+          <div class="emotion-sub">잠깐의 여유.<br>숨을 고를 수 있는 시간.</div>
+        </div>
+        <div class="problem-col">
+          <div class="emotion" style="color: #1A1A1A;">죄책감</div>
+          <div class="emotion-sub">이러면 안 되는데.<br>또 틀어주고 말았다.</div>
+        </div>
+      </div>
+      <p class="problem-footer">기존 앱의 답: 더 많은 영상을 보여줍니다.</p>
+    </div>
+  </section>
+
+  <!-- Slide 3: Market -->
+  <section class="slide" id="slide-3">
+    <div class="slide-inner">
+      <div class="market-numbers">
+        <div class="market-item">
+          <div class="num">약 18조원</div>
+          <div class="label">글로벌 유아 에드테크 시장</div>
+        </div>
+        <div class="market-item">
+          <div class="num">15.3%</div>
+          <div class="label">연 성장률 (CAGR)</div>
+        </div>
+        <div class="market-item">
+          <div class="num">53.6%</div>
+          <div class="label">3~5세 세그먼트 비중</div>
+        </div>
+      </div>
+      <p class="market-footer">이 안에서 우리가 서려는 자리는 아직 비어 있습니다</p>
+    </div>
+  </section>
+
+  <!-- Slide 4: Solution (Scenario) -->
+  <section class="slide" id="slide-4">
+    <div class="slide-inner">
+      <div class="scenario-left">
+        <h2>서연이(4세). 어린이집에서 속상한 일이 있었던 날입니다.</h2>
+        <div class="scenario-flow">
+          <div class="scenario-step">
+            <div class="step-dot">1</div>
+            <div class="step-text">저녁에 앱을 열면 — 햄햄이도 비슷한 감정을 겪는 에피소드</div>
+          </div>
+          <div class="scenario-step">
+            <div class="step-dot">2</div>
+            <div class="step-text">영상이 끝나면 화면이 천천히 어두워집니다</div>
+          </div>
+          <div class="scenario-step">
+            <div class="step-dot">3</div>
+            <div class="step-text">엄마 폰에 알림이 옵니다</div>
+          </div>
+          <div class="scenario-step">
+            <div class="step-dot">4</div>
+            <div class="step-text">엄마가 그 한마디를 하는 순간,<br>서연이가 어린이집 이야기를 꺼냅니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="scenario-right">
+        <img src="../assets/characters/hamhami.jpeg" alt="햄햄이">
+        <div class="scenario-push">
+          <div class="push-label">부모 알림</div>
+          <div class="push-text">"오늘 뭔가 속상한 일 있었어?<br>말해줄 수 있어?"</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 5: Demo 1 - Onboarding -->
+  <section class="slide slide-demo" id="slide-5">
+    <div class="slide-inner">
+      <div class="demo-left">
+        <h2>부모가 처음 앱을 열면<br>이런 경험을 합니다</h2>
+        <p>이름 입력 → 고민 선택 → 맞춤 프로그램</p>
+        <p class="demo-cta">→ 직접 해보세요</p>
+      </div>
+      <div class="demo-right">
+        <iframe src="../prototype/index.html" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 6: Core Flow -->
+  <section class="slide" id="slide-6">
+    <div class="slide-inner">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-icon">&#9654;</div>
+          <div class="flow-title">영상</div>
+          <div class="flow-desc">5~7분</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">&#9679;</div>
+          <div class="flow-title">Blackout</div>
+          <div class="flow-desc">화면 어두워짐</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">&#9998;</div>
+          <div class="flow-title">부모 가이드</div>
+          <div class="flow-desc">맥락 맞춤 대사</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">&#9829;</div>
+          <div class="flow-title">함께하기</div>
+          <div class="flow-desc">5분 액티비티</div>
+        </div>
+      </div>
+      <p class="flow-footer">12~20분. 영상에서 시작해 부모의 품에서 끝나는 여정입니다</p>
+    </div>
+  </section>
+
+  <!-- Slide 7: Demo 2 - Episode to Parent Guide -->
+  <section class="slide slide-demo" id="slide-7">
+    <div class="slide-inner">
+      <div class="demo-left">
+        <h2>영상이 끝나고<br>화면이 어두워지는 순간</h2>
+        <p>오늘의 미션을 눌러보세요</p>
+        <p class="demo-cta">→ 직접 해보세요</p>
+      </div>
+      <div class="demo-right">
+        <iframe src="../prototype/index.html?screen=home" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 8: Characters -->
+  <section class="slide" id="slide-8">
+    <div class="slide-inner">
+      <div class="char-row">
+        <div class="char-item sub">
+          <img src="../assets/characters/hamhami.jpeg" alt="햄햄이">
+          <div class="char-name">햄햄이</div>
+          <div class="char-role">감정 인식</div>
+        </div>
+        <div class="char-item sub">
+          <img src="../assets/characters/bubi.jpeg" alt="부비">
+          <div class="char-name">부비</div>
+          <div class="char-role">호기심 / 사고력</div>
+        </div>
+        <div class="char-item main">
+          <img src="../assets/characters/gongbueng.jpeg" alt="공부엉">
+          <div class="char-name">공부엉</div>
+          <div class="char-role">마음숲의 안내자</div>
+        </div>
+        <div class="char-item sub">
+          <img src="../assets/characters/ttori.jpeg" alt="또리">
+          <div class="char-name">또리</div>
+          <div class="char-role">사회성 / 배려</div>
+        </div>
+        <div class="char-item sub">
+          <img src="../assets/characters/popo.jpeg" alt="포포">
+          <div class="char-name">포포</div>
+          <div class="char-role">감정 조절 / 안정</div>
+        </div>
+      </div>
+      <p class="forest-note">마음숲 — 감정을 배울 때마다 나무가 자랍니다</p>
+    </div>
+  </section>
+
+  <!-- Slide 9: Demo 3 - Forest -->
+  <section class="slide slide-demo" id="slide-9">
+    <div class="slide-inner">
+      <div class="demo-left">
+        <h2>감정을 하나 배울 때마다<br>숲에 나무가 한 그루 자랍니다</h2>
+        <p>나무를 하나 눌러보세요</p>
+        <p class="demo-cta">→ 직접 해보세요</p>
+      </div>
+      <div class="demo-right">
+        <iframe src="../prototype/index.html?screen=forest" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 10: Curriculum -->
+  <section class="slide" id="slide-10">
+    <div class="slide-inner">
+      <h2>커리큘럼</h2>
+      <table class="casel-table">
+        <thead>
+          <tr><th>CASEL 역량</th><th>쉽게 말하면</th><th>담당</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>자기 인식</td>
+            <td>내 감정이 뭔지 아는 것</td>
+            <td><img src="../assets/characters/hamhami.jpeg" alt="">햄햄이</td>
+          </tr>
+          <tr>
+            <td>자기 관리</td>
+            <td>화가 나도 참을 수 있는 것</td>
+            <td><img src="../assets/characters/popo.jpeg" alt="">포포</td>
+          </tr>
+          <tr>
+            <td>사회적 인식</td>
+            <td>친구 마음을 이해하는 것</td>
+            <td><img src="../assets/characters/ttori.jpeg" alt="">또리</td>
+          </tr>
+          <tr>
+            <td>관계 기술</td>
+            <td>사이좋게 지내는 방법</td>
+            <td><img src="../assets/characters/ttori.jpeg" alt="">또리</td>
+          </tr>
+          <tr>
+            <td>호기심 / 탐구적 사고</td>
+            <td>궁금한 걸 스스로 찾아가는 것</td>
+            <td><img src="../assets/characters/bubi.jpeg" alt="">부비</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="curriculum-footer">CASEL 프레임워크 × 누리과정. 59개 발달 과업 기반 설계</p>
+    </div>
+  </section>
+
+  <!-- Slide 11: Competition -->
+  <section class="slide" id="slide-11">
+    <div class="slide-inner">
+      <h2>차별점</h2>
+      <table class="comp-table">
+        <thead>
+          <tr><th>앱</th><th>SEL / 정서교육</th><th>부모 참여</th><th>영상 후 행동 가이드</th><th>오토플레이 차단</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Khan Kids</td><td>◎ EASEL Lab 협업</td><td>✕</td><td>✕</td><td>✕</td>
+          </tr>
+          <tr>
+            <td>Lingokids</td><td>△</td><td>△ 대시보드+활동 제안</td><td>✕</td><td>✕</td>
+          </tr>
+          <tr>
+            <td>HOMER</td><td>△</td><td>△ 리포트</td><td>✕</td><td>✕</td>
+          </tr>
+          <tr>
+            <td>스마트올키즈</td><td>✕ 학과 중심</td><td>△ 관리형</td><td>✕</td><td>✕</td>
+          </tr>
+          <tr class="highlight">
+            <td><strong>공부엉즈</strong></td><td><strong>◎ 핵심 축</strong></td><td><strong>◎ 핵심 축</strong></td><td><strong>◎</strong></td><td><strong>◎ Blackout</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="comp-footer">감정 교육을 다루는 앱은 있습니다. 부모 기능이 있는 앱도 있습니다.<br>그 두 가지를 하나의 순간에 연결하는 앱이 없습니다.</p>
+    </div>
+  </section>
+
+  <!-- Slide 12: Revenue -->
+  <section class="slide" id="slide-12">
+    <div class="slide-inner">
+      <h2>수익 구조</h2>
+      <div class="revenue-flow">
+        <span>무료 3편</span>
+        <span class="arrow">→</span>
+        <span>아이가 빠짐</span>
+        <span class="arrow">→</span>
+        <span>구독 전환</span>
+      </div>
+      <div class="revenue-price">월 9,900 ~ 14,900원</div>
+      <div class="retention-grid">
+        <div class="retention-item">
+          <div class="ret-title">캐릭터 애착</div>
+          <div class="ret-desc">무료 3편이면 아이가 빠집니다. "공부엉 더 보여줘"</div>
+        </div>
+        <div class="retention-item">
+          <div class="ret-title">스크립트 의존</div>
+          <div class="ret-desc">부모가 매일 받는 대사. 없으면 불안해집니다.</div>
+        </div>
+        <div class="retention-item">
+          <div class="ret-title">루틴 고정</div>
+          <div class="ret-desc">자기 전 15분이 앱으로 잡히면 해지 = 루틴 파괴</div>
+        </div>
+        <div class="retention-item">
+          <div class="ret-title">데이터 축적</div>
+          <div class="ret-desc">3개월치 성장 기록을 버릴 수 없습니다</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 13: Goods / IP -->
+  <section class="slide" id="slide-13">
+    <div class="slide-inner">
+      <h2>굿즈 / IP 확장</h2>
+      <div class="goods-grid">
+        <div class="goods-card">
+          <img src="../assets/goods/plush-set.jpeg" alt="감정 인형 세트">
+          <div class="goods-name">감정 인형 세트</div>
+          <div class="goods-desc">5종 감정 캐릭터 봉제인형</div>
+        </div>
+        <div class="goods-card">
+          <img src="../assets/goods/workbook.jpeg" alt="프리미엄 워크북">
+          <div class="goods-name">프리미엄 워크북</div>
+          <div class="goods-desc">에피소드 연계 활동지</div>
+        </div>
+        <div class="goods-card">
+          <img src="../assets/goods/playset.jpeg" alt="마음숲 플레이 세트">
+          <div class="goods-name">마음숲 플레이 세트</div>
+          <div class="goods-desc">역할놀이 피규어 + 배경판</div>
+        </div>
+        <div class="goods-card">
+          <img src="../assets/goods/daily-goods.jpeg" alt="생활용품">
+          <div class="goods-name">생활용품</div>
+          <div class="goods-desc">칫솔 · 컵 · 수저 캐릭터 라인</div>
+        </div>
+      </div>
+      <div class="expansion-steps">
+        <span class="exp-step">앱</span>
+        <span class="exp-arrow">→</span>
+        <span class="exp-step">굿즈</span>
+        <span class="exp-arrow">→</span>
+        <span class="exp-step">B2B</span>
+        <span class="exp-arrow">→</span>
+        <span class="exp-step">오프라인</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 14: Demo 4 - Parent Space -->
+  <section class="slide slide-demo" id="slide-14">
+    <div class="slide-inner">
+      <div class="demo-left">
+        <h2>부모가 보는 화면은<br>완전히 다른 세계입니다</h2>
+        <p>아무 숫자 4개를 눌러보세요</p>
+        <p class="demo-cta">→ 직접 해보세요</p>
+      </div>
+      <div class="demo-right">
+        <iframe src="../prototype/index.html?screen=parent-pin" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 15: Execution -->
+  <section class="slide" id="slide-15">
+    <div class="slide-inner">
+      <h2>실행 계획</h2>
+      <div class="timeline-row">
+        <div class="timeline-card">
+          <h4>MVP (3개월)</h4>
+          <ul>
+            <li>에피소드 15편</li>
+            <li>Blackout / Handoff</li>
+            <li>부모 가이드 스크립트</li>
+            <li>마음숲 도감 + 결제</li>
+          </ul>
+        </div>
+        <div class="timeline-card">
+          <h4>Phase 2 (6개월)</h4>
+          <ul>
+            <li>놀이 확장 (미니게임)</li>
+            <li>수면 콘텐츠</li>
+            <li>워크북 다운로드</li>
+            <li>리포트 고도화</li>
+          </ul>
+        </div>
+        <div class="timeline-card">
+          <h4>Phase 3 (12개월~)</h4>
+          <ul>
+            <li>다국어 (영어 우선)</li>
+            <li>B2B 기관 라이선스</li>
+            <li>AI 맞춤 가이드 매칭</li>
+            <li>오프라인 연계</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 16: Risk -->
+  <section class="slide" id="slide-16">
+    <div class="slide-inner">
+      <h2>리스크와 대응</h2>
+      <div class="risk-grid">
+        <div class="risk-card">
+          <div class="risk-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="risk-title">부모 참여 피로도</div>
+            <div class="risk-resp">최소 10초(안아주기 + 한 문장). 주 3회 권장, 강제 없음.</div>
+          </div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div>
+            <div class="risk-title">지불 의사 미검증</div>
+            <div class="risk-resp">인터뷰 10명 + 설문 100명 + 랜딩 테스트. 검증 전 본개발 없음.</div>
+          </div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div>
+            <div class="risk-title">전문가 검증 부재</div>
+            <div class="risk-resp">아동발달 전공자 자문위원 확보 중. 에피소드별 매핑 검토 예정.</div>
+          </div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <div>
+            <div class="risk-title">캐릭터 비주얼</div>
+            <div class="risk-resp">5종 컨셉 시안 확보 완료. 일러스트레이터 협업 진행 중.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 17: Closing -->
+  <section class="slide" id="slide-17">
+    <div class="slide-inner">
+      <img src="../assets/characters/gongbueng.jpeg" alt="공부엉">
+      <p class="closing-text">아이가 세상에서 처음 만나는 브랜드</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="slide-number" id="slideNum">1 / 17</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const numEl = document.getElementById('slideNum');
+  let current = 0;
+  const total = slides.length;
+
+  function isDark(idx) {
+    return slides[idx].classList.contains('slide-demo');
+  }
+
+  function go(idx) {
+    if (idx < 0 || idx >= total) return;
+    slides[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    numEl.textContent = (current + 1) + ' / ' + total;
+    if (isDark(current)) {
+      numEl.classList.add('dark');
+    } else {
+      numEl.classList.remove('dark');
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { go(current + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { go(current - 1); }
+  });
+
+  let touchX = 0;
+  document.addEventListener('touchstart', function(e) { touchX = e.touches[0].clientX; });
+  document.addEventListener('touchend', function(e) {
+    const diff = e.changedTouches[0].clientX - touchX;
+    if (diff < -50) go(current + 1);
+    else if (diff > 50) go(current - 1);
+  });
+})();
+</script>
+</body>
+</html>
