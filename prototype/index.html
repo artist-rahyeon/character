@@ -652,7 +652,7 @@ body {
   height: 100%;
   background: #FAFAF8;
   width: 0%;
-  transition: width 3s linear;
+  transition: width 8s linear;
 }
 
 /* ====== BLACKOUT ====== */
@@ -1665,22 +1665,7 @@ body {
   });
 
   function startPlayer() {
-    showScreen('player');
-    var fill = document.getElementById('player-fill');
-    fill.style.width = '0%';
-    requestAnimationFrame(function() {
-      fill.style.width = '100%';
-    });
-    setTimeout(function() {
-      showScreen('blackout');
-      setTimeout(function() {
-        document.getElementById('blackout-text').classList.add('visible');
-      }, 800);
-      setTimeout(function() {
-        document.getElementById('blackout-text').classList.remove('visible');
-        showScreen('handoff');
-      }, 3000);
-    }, 3200);
+    window.location.href = 'episode.html';
   }
 
   // Handoff done
