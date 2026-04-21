@@ -16,11 +16,11 @@ body {
   justify-content: center;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
 }
 
 .app {
   width: 390px;
+  min-height: 100vh;
   height: 100vh;
   background: #FAFAF8;
   position: relative;
@@ -1028,6 +1028,7 @@ body {
   function startScene10() {
     const video = document.getElementById('video-tree');
     const overlay = document.getElementById('scene10-overlay');
+    let overlayReady = false;
     video.currentTime = 0;
     video.play().catch(function(){});
 
@@ -1039,19 +1040,45 @@ body {
       playBell();
       setTimeout(function() { playBirdChirp(); }, 400);
       setTimeout(function() { playBirdChirp(); }, 900);
+      // 3초 후에야 다음으로 넘길 수 있음
+      overlayReady = false;
+      setTimeout(function() { overlayReady = true; }, 3000);
     }
 
     video.onended = function() { showOverlay(); };
 
-    // Allow tap to skip video, then tap overlay to advance
     document.getElementById('scene10').onclick = function(e) {
       if (!overlay.classList.contains('visible')) {
         showOverlay();
-      } else {
+      } else if (overlayReady) {
         nextScene();
       }
     };
   }
+
+  // ====== TAP DELAY per scene (prevent skipping too fast) ======
+  let tapReady = false;
+  const sceneDelay = {
+    1: 2000,  // 공부엉 인사
+    2: 2000,  // 햄햄이 블록
+    4: 2500,  // 분노 폭발
+    6: 2500,  // 포포 등장
+    8: 2000,  // 진정
+  };
+
+  function onSceneReady(num) {
+    tapReady = false;
+    var delay = sceneDelay[num] || 1500;
+    setTimeout(function() { tapReady = true; }, delay);
+  }
+
+  // Call onSceneReady when scene enters
+  var origOnSceneEnter = onSceneEnter;
+  onSceneEnter = function(num) {
+    origOnSceneEnter(num);
+    onSceneReady(num);
+  };
+  onSceneReady(1); // first scene
 
   // ====== GLOBAL TAP HANDLER ======
   document.getElementById('app').addEventListener('click', function(e) {
@@ -1063,6 +1090,9 @@ body {
 
     // parent-guide
     if (document.getElementById('parent-guide').classList.contains('active')) return;
+
+    // Not ready yet — wait for delay
+    if (!tapReady) return;
 
     nextScene();
   });
@@ -1076,7 +1106,8 @@ body {
   });
 
   // ====== INIT ======
-  showScene(1);
+  // Scene 1 is already active in HTML, no need to call showScene(1)
+  // which would hide-then-reshow it causing a flash bug.
 
 })();
 </script>
